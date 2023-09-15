@@ -1,12 +1,14 @@
-import React, { useReducer, useRef, useEffect } from "react";
-
+import React, { useReducer, useRef, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
-import DBTest from "./pages/DBTest";
+
+// DB 관련
+import { db } from "./firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -40,20 +42,32 @@ export const DiaryDispatchContext = React.createContext();
 
 function App() {
   const [data, dispatch] = useReducer(reducer, []);
+  const [diary, setDiary] = useState([]);
+  const diaryCollectionRef = collection(db, "diary");
 
   useEffect(() => {
-    const localData = localStorage.getItem("diary");
-    if (localData) {
-      const diaryList = JSON.parse(localData).sort(
-        (a, b) => parseInt(b.id) - parseInt(a.id)
-      );
+    const getDiary = async () => {
+      const diaryData = await getDocs(diaryCollectionRef);
+      const dataArray = diaryData.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setDiary(dataArray);
+    };
+
+    getDiary();
+  }, []);
+
+  useEffect(() => {
+    if (diary) {
+      const diaryList = diary.sort((a, b) => parseInt(b.id) - parseInt(a.id));
 
       if (diaryList.length >= 1) {
         dataId.current = parseInt(diaryList[0].id) + 1;
         dispatch({ type: "INIT", data: diaryList });
       }
     }
-  }, []);
+  }, [diary]);
 
   const dataId = useRef(0);
 
@@ -99,7 +113,6 @@ function App() {
               <Route path="/new" element={<New />} />
               <Route path="/diary/:id" element={<Diary />} />
               <Route path="/edit/:id" element={<Edit />} />
-              <Route path="/db" element={<DBTest />} />
             </Routes>
           </div>
         </BrowserRouter>

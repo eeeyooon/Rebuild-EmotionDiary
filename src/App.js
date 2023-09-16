@@ -83,7 +83,7 @@ function App() {
   // CREATE
   const onCreate = async (date, content, emotion) => {
     try {
-      const docRef = await addDoc(diaryCollectionRef, {
+      await addDoc(diaryCollectionRef, {
         diaryId: dataId.current,
         emotion,
         content,
@@ -92,7 +92,7 @@ function App() {
       });
 
       const newData = {
-        diaryId: docRef.id,
+        diaryId: dataId.current,
         emotion,
         content,
         date: new Date(date).getTime(),

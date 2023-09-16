@@ -8,20 +8,20 @@ import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 
 const Diary = () => {
-  const { id } = useParams();
+  const { diaryId } = useParams();
   const diaryList = useContext(DiaryStateContext);
   const navigate = useNavigate();
   const [data, setData] = useState();
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
-    titleElement.innerHTML = `감정 일기장 - ${id}번 일기`;
+    titleElement.innerHTML = `감정 일기장 - ${diaryId}번 일기`;
   }, []);
 
   useEffect(() => {
     if (diaryList.length >= 1) {
       const targetDiary = diaryList.find(
-        (it) => parseInt(it.id) === parseInt(id)
+        (it) => parseInt(it.diaryId) === parseInt(diaryId)
       );
 
       if (targetDiary) {
@@ -31,7 +31,7 @@ const Diary = () => {
         navigate("/", { replace: true });
       }
     }
-  }, [id, diaryList]);
+  }, [diaryId, diaryList]);
 
   if (!data) {
     return <div>로딩중입니다...</div>;
@@ -50,7 +50,7 @@ const Diary = () => {
           rightChild={
             <MyButton
               text={"수정하기"}
-              onClick={() => navigate(`/edit/${data.id}`)}
+              onClick={() => navigate(`/edit/${data.diaryId}`)}
             />
           }
         />

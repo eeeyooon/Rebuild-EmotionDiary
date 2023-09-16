@@ -8,7 +8,7 @@ import Edit from "./pages/Edit";
 
 // DB 관련
 import { db } from "./firebase/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -21,19 +21,19 @@ const reducer = (state, action) => {
       break;
     }
     case "REMOVE": {
-      newState = state.filter((it) => it.id !== action.targetId);
+      newState = state.filter((it) => it.diaryId !== action.targetId);
       break;
     }
     case "EDIT": {
       newState = state.map((it) =>
-        it.id === action.data.id ? { ...action.data } : it
+        it.diaryId === action.data.diaryId ? { ...action.data } : it
       );
       break;
     }
     default:
       return state;
   }
-  localStorage.setItem("diary", JSON.stringify(newState));
+  // localStorage.setItem("diary", JSON.stringify(newState));
   return newState;
 };
 
@@ -49,7 +49,7 @@ function App() {
     const getDiary = async () => {
       const diaryData = await getDocs(diaryCollectionRef);
       const dataArray = diaryData.docs.map((doc) => ({
-        id: doc.id,
+        diaryId: doc.diaryId,
         ...doc.data(),
       }));
       setDiary(dataArray);
@@ -60,10 +60,12 @@ function App() {
 
   useEffect(() => {
     if (diary) {
-      const diaryList = diary.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+      const diaryList = diary.sort(
+        (a, b) => parseInt(b.diaryId) - parseInt(a.diaryId)
+      );
 
       if (diaryList.length >= 1) {
-        dataId.current = parseInt(diaryList[0].id) + 1;
+        dataId.current = parseInt(diaryList[0].diaryId) + 1;
         dispatch({ type: "INIT", data: diaryList });
       }
     }
@@ -72,17 +74,27 @@ function App() {
   const dataId = useRef(0);
 
   // CREATE
-  const onCreate = (date, content, emotion) => {
-    dispatch({
-      type: "CREATE",
-      data: {
-        id: dataId.current,
+  const onCreate = async (date, content, emotion) => {
+    try {
+      const docRef = await addDoc(diaryCollectionRef, {
+        diaryId: dataId.current,
         emotion,
         content,
         date: new Date(date).getTime(),
-      },
-    });
-    dataId.current += 1;
+        user: "userId01",
+      });
+
+      const newData = {
+        diaryId: docRef.id,
+        emotion,
+        content,
+        date: new Date(date).getTime(),
+      };
+      dispatch({ type: "CREATE", data: newData });
+      dataId.current += 1;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // REMOVE
@@ -95,7 +107,7 @@ function App() {
     dispatch({
       type: "EDIT",
       data: {
-        id: targetId,
+        diaryId: targetId,
         emotion,
         date: new Date(date).getTime(),
         content,
@@ -111,8 +123,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/new" element={<New />} />
-              <Route path="/diary/:id" element={<Diary />} />
-              <Route path="/edit/:id" element={<Edit />} />
+              <Route path="/diary/:diaryId" element={<Diary />} />
+              <Route path="/edit/:diaryId" element={<Edit />} />
             </Routes>
           </div>
         </BrowserRouter>

@@ -5,20 +5,20 @@ import DiaryEditor from "./../components/DiaryEditor";
 
 const Edit = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { diaryId } = useParams();
   const [originData, setOrigindata] = useState();
 
   const diaryList = useContext(DiaryStateContext);
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
-    titleElement.innerHTML = `감정 일기장 - ${id}번 일기 수정`;
+    titleElement.innerHTML = `감정 일기장 - ${diaryId}번 일기 수정`;
   }, []);
 
   useEffect(() => {
     if (diaryList.length >= 1) {
       const targetDiary = diaryList.find(
-        (it) => parseInt(it.id) === parseInt(id)
+        (it) => parseInt(it.diaryId) === parseInt(diaryId)
       );
 
       if (targetDiary) {
@@ -28,7 +28,7 @@ const Edit = () => {
         navigate("/", { replace: true });
       }
     }
-  }, [id, diaryList]);
+  }, [diaryId, diaryList]);
 
   return (
     <div>

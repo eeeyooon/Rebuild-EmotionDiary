@@ -2,17 +2,17 @@ import MyButton from "./MyButton";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 
-const DiaryItem = ({ id, emotion, content, date }) => {
+const DiaryItem = ({ diaryId, emotion, content, date }) => {
   const navigate = useNavigate();
 
   const strDate = new Date(parseInt(date)).toLocaleDateString();
 
   const goDetail = () => {
-    navigate(`/diary/${id}`);
+    navigate(`/diary/${diaryId}`);
   };
 
   const goEdit = () => {
-    navigate(`/edit/${id}`);
+    navigate(`/edit/${diaryId}`);
   };
 
   return (

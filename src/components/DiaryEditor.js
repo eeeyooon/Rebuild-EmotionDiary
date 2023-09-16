@@ -34,7 +34,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
       if (!isEdit) {
         onCreate(date, content, emotion);
       } else {
-        onEdit(originData.id, date, content, emotion);
+        onEdit(originData.diaryId, date, content, emotion);
       }
     }
     navigate("/", { replace: true });
@@ -42,7 +42,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
 
   const handleRemove = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      onRemove(originData.id);
+      onRemove(originData.diaryId);
       navigate("/", { replace: true });
     }
   };

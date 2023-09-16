@@ -8,7 +8,13 @@ import Edit from "./pages/Edit";
 
 // DB 관련
 import { db } from "./firebase/firebaseConfig";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -49,6 +55,7 @@ function App() {
     const getDiary = async () => {
       const diaryData = await getDocs(diaryCollectionRef);
       const dataArray = diaryData.docs.map((doc) => ({
+        id: doc.id,
         diaryId: doc.diaryId,
         ...doc.data(),
       }));
@@ -103,16 +110,33 @@ function App() {
   };
 
   // EDIT
-  const onEdit = (targetId, date, content, emotion) => {
-    dispatch({
-      type: "EDIT",
-      data: {
+  const onEdit = async (targetId, date, content, emotion) => {
+    try {
+      const targetData = data.find((item) => item.diaryId === targetId);
+
+      if (!targetData) {
+        console.error("해당 데이터를 찾을 수 없습니다.");
+        return;
+      }
+
+      const docRef = doc(diaryCollectionRef, targetData.id);
+      await updateDoc(docRef, {
+        emotion,
+        content,
+        date: new Date(date).getTime(),
+      });
+      const updatedData = {
         diaryId: targetId,
         emotion,
-        date: new Date(date).getTime(),
         content,
-      },
-    });
+        id: targetData.id,
+        date: new Date(date).getTime(),
+      };
+
+      dispatch({ type: "EDIT", data: updatedData });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

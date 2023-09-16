@@ -14,6 +14,7 @@ import {
   addDoc,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 const reducer = (state, action) => {
@@ -63,7 +64,7 @@ function App() {
     };
 
     getDiary();
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (diary) {
@@ -105,7 +106,17 @@ function App() {
   };
 
   // REMOVE
-  const onRemove = (targetId) => {
+  const onRemove = async (targetId) => {
+    try {
+      const targetData = data.find((item) => item.diaryId === targetId);
+      if (!targetData) {
+        console.error("해당 데이터를 찾을 수 없습니다.");
+        return;
+      }
+      await deleteDoc(doc(db, "diary", targetData.id));
+    } catch (error) {
+      console.error(error);
+    }
     dispatch({ type: "REMOVE", targetId });
   };
 

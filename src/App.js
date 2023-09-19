@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
+import Login from "./pages/Login";
 
 // DB 관련
 import { db } from "./firebase/firebaseConfig";
@@ -51,6 +52,10 @@ function App() {
   const [data, dispatch] = useReducer(reducer, []);
   const [diary, setDiary] = useState([]);
   const diaryCollectionRef = collection(db, "diary");
+
+  useEffect(() => {
+    localStorage.setItem("user", "userId01");
+  }, []);
 
   useEffect(() => {
     const getDiary = async () => {
@@ -157,6 +162,7 @@ function App() {
           <div className="App">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/new" element={<New />} />
               <Route path="/diary/:diaryId" element={<Diary />} />
               <Route path="/edit/:diaryId" element={<Edit />} />

@@ -55,25 +55,25 @@ function App() {
   const diaryCollectionRef = collection(db, "diary");
   const [user, setUser] = useState("");
 
+  const getDiary = async () => {
+    const diaryData = await getDocs(
+      query(diaryCollectionRef, where("user", "==", user))
+    );
+    const dataArray = diaryData.docs.map((doc) => ({
+      id: doc.id,
+      diaryId: doc.diaryId,
+      user: doc.user,
+      ...doc.data(),
+    }));
+    setDiary(dataArray);
+  };
+
   useEffect(() => {
     setUser("userId01");
     localStorage.setItem("user", "userId01");
   }, []);
 
   useEffect(() => {
-    const getDiary = async () => {
-      const diaryData = await getDocs(
-        query(diaryCollectionRef, where("user", "==", user))
-      );
-      const dataArray = diaryData.docs.map((doc) => ({
-        id: doc.id,
-        diaryId: doc.diaryId,
-        user: doc.user,
-        ...doc.data(),
-      }));
-      setDiary(dataArray);
-    };
-
     getDiary();
   }, [user]);
 
@@ -112,19 +112,6 @@ function App() {
       dispatch({ type: "CREATE", data: newData });
       dataId.current += 1;
 
-      const getDiary = async () => {
-        const diaryData = await getDocs(
-          query(diaryCollectionRef, where("user", "==", user))
-        );
-        const dataArray = diaryData.docs.map((doc) => ({
-          id: doc.id,
-          diaryId: doc.diaryId,
-          user: doc.user,
-          ...doc.data(),
-        }));
-        setDiary(dataArray);
-      };
-
       getDiary();
     } catch (error) {
       console.log(error);
@@ -140,6 +127,8 @@ function App() {
         return;
       }
       await deleteDoc(doc(db, "diary", targetData.id));
+
+      getDiary();
     } catch (error) {
       console.error(error);
     }
@@ -157,6 +146,7 @@ function App() {
       }
 
       const docRef = doc(diaryCollectionRef, targetData.id);
+
       await updateDoc(docRef, {
         emotion,
         content,

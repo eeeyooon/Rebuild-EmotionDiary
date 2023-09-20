@@ -43,7 +43,6 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-  // localStorage.setItem("diary", JSON.stringify(newState));
   return newState;
 };
 
@@ -76,7 +75,7 @@ function App() {
     };
 
     getDiary();
-  }, [data, user]);
+  }, [user]);
 
   useEffect(() => {
     if (diary) {
@@ -112,6 +111,21 @@ function App() {
       };
       dispatch({ type: "CREATE", data: newData });
       dataId.current += 1;
+
+      const getDiary = async () => {
+        const diaryData = await getDocs(
+          query(diaryCollectionRef, where("user", "==", user))
+        );
+        const dataArray = diaryData.docs.map((doc) => ({
+          id: doc.id,
+          diaryId: doc.diaryId,
+          user: doc.user,
+          ...doc.data(),
+        }));
+        setDiary(dataArray);
+      };
+
+      getDiary();
     } catch (error) {
       console.log(error);
     }
@@ -148,6 +162,7 @@ function App() {
         content,
         date: new Date(date).getTime(),
       });
+
       const updatedData = {
         diaryId: targetId,
         emotion,
@@ -161,7 +176,6 @@ function App() {
       console.log(error);
     }
   };
-
   return (
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{ onCreate, onRemove, onEdit }}>

@@ -16,6 +16,8 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 const reducer = (state, action) => {
@@ -52,24 +54,29 @@ function App() {
   const [data, dispatch] = useReducer(reducer, []);
   const [diary, setDiary] = useState([]);
   const diaryCollectionRef = collection(db, "diary");
+  const [user, setUser] = useState("");
 
   useEffect(() => {
+    setUser("userId01");
     localStorage.setItem("user", "userId01");
   }, []);
 
   useEffect(() => {
     const getDiary = async () => {
-      const diaryData = await getDocs(diaryCollectionRef);
+      const diaryData = await getDocs(
+        query(diaryCollectionRef, where("user", "==", user))
+      );
       const dataArray = diaryData.docs.map((doc) => ({
         id: doc.id,
         diaryId: doc.diaryId,
+        user: doc.user,
         ...doc.data(),
       }));
       setDiary(dataArray);
     };
 
     getDiary();
-  }, [data]);
+  }, [data, user]);
 
   useEffect(() => {
     if (diary) {
@@ -94,7 +101,7 @@ function App() {
         emotion,
         content,
         date: new Date(date).getTime(),
-        user: "userId01",
+        user: localStorage.getItem("user"),
       });
 
       const newData = {

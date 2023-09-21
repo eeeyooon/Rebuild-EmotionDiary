@@ -6,6 +6,8 @@ import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./style/theme";
 
 // DB 관련
 import { db } from "./firebase/firebaseConfig";
@@ -167,21 +169,23 @@ function App() {
     }
   };
   return (
-    <DiaryStateContext.Provider value={data}>
-      <DiaryDispatchContext.Provider value={{ onCreate, onRemove, onEdit }}>
-        <BrowserRouter>
-          <div className="App">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/new" element={<New />} />
-              <Route path="/diary/:diaryId" element={<Diary />} />
-              <Route path="/edit/:diaryId" element={<Edit />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </DiaryDispatchContext.Provider>
-    </DiaryStateContext.Provider>
+    <ThemeProvider theme={theme}>
+      <DiaryStateContext.Provider value={data}>
+        <DiaryDispatchContext.Provider value={{ onCreate, onRemove, onEdit }}>
+          <BrowserRouter>
+            <div className="App">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/new" element={<New />} />
+                <Route path="/diary/:diaryId" element={<Diary />} />
+                <Route path="/edit/:diaryId" element={<Edit />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </DiaryDispatchContext.Provider>
+      </DiaryStateContext.Provider>
+    </ThemeProvider>
   );
 }
 

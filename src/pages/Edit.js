@@ -25,7 +25,7 @@ const Edit = () => {
         setOrigindata(targetDiary);
       } else {
         alert("없는 일기입니다.");
-        navigate("/", { replace: true });
+        navigate("/home", { replace: true });
       }
     }
   }, [diaryId, diaryList]);

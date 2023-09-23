@@ -1,16 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
-  const [user, setUser] = useState("");
+function Login({ setUser }) {
   const navigate = useNavigate();
+  const kakaoJs = process.env.REACT_APP_KAKAO_JS;
 
+  /// 카카오 로그인
   useEffect(() => {
-    const loginedUser = localStorage.getItem("user");
+    // Kakao SDK 스크립트 로드
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.head.appendChild(script);
 
-    if (loginedUser) {
-      setUser(loginedUser);
-    }
+    script.onload = () => {
+      // Kakao SDK 초기화 및 카카오 로그인 함수 정의
+      window.Kakao.init(kakaoJs);
+
+      // 카카오 로그인 이벤트 핸들러
+      const kakaoLogin = () => {
+        window.Kakao.Auth.login({
+          scope: "profile_nickname, account_email",
+          success: function (authObj) {
+            window.Kakao.API.request({
+              url: "/v2/user/me",
+              success: (res) => {
+                const kakao_account = res.kakao_account;
+                localStorage.setItem("kakao_email", kakao_account.email);
+                localStorage.setItem(
+                  "kakao_name",
+                  kakao_account.profile.nickname
+                );
+                setUser(kakao_account.email);
+                navigate("/home");
+              },
+            });
+          },
+        });
+      };
+
+      // 로그인 버튼 클릭 이벤트 설정
+      const kakaoLoginButton = document.getElementById("kakao-login-button");
+      if (kakaoLoginButton) {
+        kakaoLoginButton.addEventListener("click", kakaoLogin);
+      }
+
+      // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+      return () => {
+        if (kakaoLoginButton) {
+          kakaoLoginButton.removeEventListener("click", kakaoLogin);
+        }
+      };
+    };
   }, []);
 
   return (

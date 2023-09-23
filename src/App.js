@@ -55,6 +55,14 @@ function App() {
   const diaryCollectionRef = collection(db, "diary");
   const [user, setUser] = useState("");
 
+  useEffect(() => {
+    const loginedUser = localStorage.getItem("kakao_email");
+
+    if (loginedUser) {
+      setUser(loginedUser);
+    }
+  }, []);
+
   const getDiary = async () => {
     const diaryData = await getDocs(
       query(diaryCollectionRef, where("user", "==", user))
@@ -67,11 +75,6 @@ function App() {
     }));
     setDiary(dataArray);
   };
-
-  useEffect(() => {
-    setUser("userId01");
-    localStorage.setItem("user", "userId01");
-  }, []);
 
   useEffect(() => {
     getDiary();
@@ -100,7 +103,7 @@ function App() {
         emotion,
         content,
         date: new Date(date).getTime(),
-        user: localStorage.getItem("user"),
+        user: localStorage.getItem("kakao_email"),
       });
 
       const newData = {
@@ -114,7 +117,7 @@ function App() {
 
       getDiary();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -163,7 +166,7 @@ function App() {
 
       dispatch({ type: "EDIT", data: updatedData });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   return (
@@ -174,7 +177,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login setUser={setUser} />} />
               <Route path="/new" element={<New />} />
               <Route path="/diary/:diaryId" element={<Diary />} />
               <Route path="/edit/:diaryId" element={<Edit />} />

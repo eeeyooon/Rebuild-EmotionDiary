@@ -4,6 +4,7 @@ import { DiaryStateContext } from "./../App";
 import MyHeader from "./../components/MyHeader";
 import MyButton from "./../components/MyButton";
 import DiaryList from "../components/DiaryList";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
@@ -11,6 +12,12 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [curDate, setCurdate] = useState(new Date());
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+  const navigate = useNavigate();
+  const loginedUser = localStorage.getItem("kakao_email");
+
+  useEffect(() => {
+    if (!loginedUser) navigate("/login");
+  }, [loginedUser]);
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
@@ -44,7 +51,7 @@ const Home = () => {
         diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
       );
     }
-  }, [diaryList, curDate]);
+  }, [diaryList, curDate, loginedUser]);
 
   const increaseMonth = () => {
     setCurdate(

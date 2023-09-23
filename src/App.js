@@ -1,6 +1,6 @@
 import React, { useReducer, useRef, useEffect, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
@@ -172,7 +172,8 @@ function App() {
         <BrowserRouter>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/new" element={<New />} />
               <Route path="/diary/:diaryId" element={<Diary />} />

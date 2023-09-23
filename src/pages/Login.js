@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [user, setUser] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loginedUser = localStorage.getItem("user");
@@ -29,7 +31,9 @@ function Login() {
         />
         카카오 로그인
       </button>
-      <button className="test_login">비회원으로 체험하기</button>
+      <button className="test_login" onClick={() => navigate("/home")}>
+        비회원으로 체험하기
+      </button>
     </div>
   );
 }

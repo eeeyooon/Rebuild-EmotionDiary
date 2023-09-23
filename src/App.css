@@ -36,6 +36,13 @@ body {
   .App {
     width: 90wh;
   }
+  .DiaryItem {
+    width: 500px;
+  }
+
+  .info_wrapper {
+    width: 300px;
+  }
 }
 
 #root {
@@ -44,8 +51,15 @@ body {
 }
 
 .App {
-  min-height: 100vh;
+  height: 1200px;
   padding: 0 20px;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.App::-webkit-scrollbar {
+  display: none;
 }
 
 h4 {

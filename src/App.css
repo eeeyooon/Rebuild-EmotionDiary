@@ -51,7 +51,7 @@ body {
 }
 
 .App {
-  height: 1200px;
+  height: 900px;
   padding: 0 20px;
   overflow-x: hidden;
   -ms-overflow-style: none;
@@ -128,6 +128,65 @@ header .head_btn_right {
 
 header button {
   font-family: "Dovemayo_gothic";
+}
+
+/* Thumbnail */
+
+.login_wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  padding-top: 60px;
+  text-align: center;
+}
+
+.thumbnail_text {
+  font-family: "Dovemayo_gothic";
+  font-size: 22px;
+  margin-bottom: 100px;
+}
+
+.thumbnail_text > span {
+  display: block;
+  margin-top: 8px;
+}
+
+.kakao_btn {
+  width: 250px;
+  height: 48px;
+  border-radius: 8px;
+  background: none;
+  background-color: #ffe400;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin: 0 auto;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.test_login {
+  width: 250px;
+  height: 48px;
+  border-radius: 8px;
+  background: none;
+  background-color: #1bbbff;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin: 0 auto;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.kakao_logo {
+  margin-right: 8px;
 }
 
 /*  DiaryList  */

@@ -19,6 +19,7 @@ const ControlMenu = React.memo(({ value, onChange, optionList }) => {
     <select
       className="ControlMenu"
       value={value}
+      name={value}
       onChange={(e) => onChange(e.target.value)}
     >
       {optionList.map((it, idx) => (

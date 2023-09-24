@@ -45,10 +45,16 @@ const DiaryList = ({ diaryList }) => {
     };
 
     const compare = (a, b) => {
+      const dateSortBA = parseInt(b.date) - parseInt(a.date);
+      const dateSortAB = parseInt(a.date) - parseInt(b.date);
       if (sortType === "latest") {
-        return parseInt(b.diaryId) - parseInt(a.diaryId);
+        return dateSortBA === 0
+          ? parseInt(b.diaryId) - parseInt(a.diaryId)
+          : dateSortBA;
       } else {
-        return parseInt(a.diaryId) - parseInt(b.diaryId);
+        return dateSortAB === 0
+          ? parseInt(a.diaryId) - parseInt(b.diaryId)
+          : dateSortAB;
       }
     };
 

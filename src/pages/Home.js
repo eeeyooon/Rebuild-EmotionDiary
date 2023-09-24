@@ -15,6 +15,11 @@ const Home = () => {
   const navigate = useNavigate();
   const loginedUser = localStorage.getItem("kakao_email");
 
+  const loginedUserName =
+    localStorage.getItem("kakao_email") === "test"
+      ? "비회원"
+      : localStorage.getItem("kakao_name");
+
   useEffect(() => {
     if (!loginedUser) navigate("/login");
   }, [loginedUser]);
@@ -73,6 +78,13 @@ const Home = () => {
         rightChild={<MyButton text={">"} onClick={increaseMonth} />}
       />
       <DiaryList diaryList={data} />
+      <footer className="myfooter">
+        <img
+          src={process.env.PUBLIC_URL + "/assets/logo.png"}
+          alt="로고 아이콘"
+        />{" "}
+        <span>{loginedUserName}님의 감정 일기장</span>
+      </footer>
     </div>
   );
 };

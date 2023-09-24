@@ -54,6 +54,12 @@ function Login({ setUser }) {
     };
   }, []);
 
+  const handleTestLogin = () => {
+    setUser("test");
+    localStorage.setItem("kakao_email", "test");
+    navigate("/home");
+  };
+
   return (
     <div className="login_wrapper">
       <img
@@ -72,7 +78,7 @@ function Login({ setUser }) {
         />
         카카오 로그인
       </button>
-      <button className="test_login" onClick={() => navigate("/home")}>
+      <button className="test_login" onClick={handleTestLogin}>
         비회원으로 체험하기
       </button>
     </div>

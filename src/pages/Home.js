@@ -13,7 +13,10 @@ const Home = () => {
   const [curDate, setCurdate] = useState(new Date());
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
   const navigate = useNavigate();
-  const loginedUser = localStorage.getItem("kakao_email");
+  // const loginedUser = localStorage.getItem("kakao_email");
+  const [loginedUser, setLoginedUser] = useState(
+    localStorage.getItem("kakao_email")
+  );
 
   const loginedUserName =
     localStorage.getItem("kakao_email") === "test"
@@ -28,6 +31,12 @@ const Home = () => {
     const titleElement = document.getElementsByTagName("title")[0];
     titleElement.innerHTML = `감정 일기장`;
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("kakao_email");
+    localStorage.removeItem("kakao_name");
+    setLoginedUser("");
+  };
 
   // curDate가 변하는 순간에만 그 날짜에 해당하는 연도와 달의 일기를 가져옴
   useEffect(() => {
@@ -79,11 +88,16 @@ const Home = () => {
       />
       <DiaryList diaryList={data} />
       <footer className="myfooter">
-        <img
-          src={process.env.PUBLIC_URL + "/assets/logo.png"}
-          alt="로고 아이콘"
-        />{" "}
-        <span>{loginedUserName}님의 감정 일기장</span>
+        <div>
+          <img
+            src={process.env.PUBLIC_URL + "/assets/logo.png"}
+            alt="로고 아이콘"
+          />
+          <span>{loginedUserName}님의 감정 일기장</span>
+        </div>
+        <button className="logout_btn" onClick={handleLogout}>
+          로그아웃
+        </button>
       </footer>
     </div>
   );

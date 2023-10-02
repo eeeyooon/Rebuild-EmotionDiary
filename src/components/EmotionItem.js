@@ -8,7 +8,7 @@ const EmotionItem = ({
   isSelected,
 }) => {
   return (
-    <div
+    <button
       onClick={() => onClick(emotion_id)}
       className={[
         "EmotionItem",
@@ -17,7 +17,7 @@ const EmotionItem = ({
     >
       <img src={emotion_img} alt="감정 아이콘" />
       <span>{emotion_descript}</span>
-    </div>
+    </button>
   );
 };
 

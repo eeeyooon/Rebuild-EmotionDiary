@@ -393,6 +393,9 @@ header button {
   border: none;
 
   user-select: none;
+
+  font-family: "Dovemayo_gothic";
+  font-size: 15px;
 }
 
 .EmotionItem img {

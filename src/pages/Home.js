@@ -86,9 +86,11 @@ const Home = () => {
           />
           <span>{loginedUserName}님의 감정 일기장</span>
         </div>
-        <button className="logout_btn" onClick={handleLogout}>
-          로그아웃
-        </button>
+        {loginedUserName !== "비회원" && (
+          <button className="logout_btn" onClick={handleLogout}>
+            로그아웃
+          </button>
+        )}
       </footer>
     </div>
   );

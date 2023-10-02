@@ -20,6 +20,7 @@
 <br/>
 
 ## 기존의 감정 일기장
+[기존 감정 일기장 레포](https://github.com/eeeyooon/emotion-diary)
 
 - 로그인 없이 사이트 접속 시 누구나 일기 데이터를 작성,수정,삭제 할 수 있음.
 - 일기 데이터는 브라우저의 localstorage에 관리됨.

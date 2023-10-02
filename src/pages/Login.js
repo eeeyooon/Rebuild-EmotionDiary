@@ -5,16 +5,14 @@ function Login({ setUser }) {
   const navigate = useNavigate();
   const kakaoJs = process.env.REACT_APP_KAKAO_JS;
 
-  /// 카카오 로그인
+  // 카카오 로그인
   useEffect(() => {
-    // Kakao SDK 스크립트 로드
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
     script.async = true;
     document.head.appendChild(script);
 
     script.onload = () => {
-      // Kakao SDK 초기화 및 카카오 로그인 함수 정의
       window.Kakao.init(kakaoJs);
 
       // 카카오 로그인 이벤트 핸들러
@@ -39,13 +37,11 @@ function Login({ setUser }) {
         });
       };
 
-      // 로그인 버튼 클릭 이벤트 설정
       const kakaoLoginButton = document.getElementById("kakao-login-button");
       if (kakaoLoginButton) {
         kakaoLoginButton.addEventListener("click", kakaoLogin);
       }
 
-      // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
       return () => {
         if (kakaoLoginButton) {
           kakaoLoginButton.removeEventListener("click", kakaoLogin);

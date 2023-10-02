@@ -7,7 +7,6 @@ const Edit = () => {
   const navigate = useNavigate();
   const { diaryId } = useParams();
   const [originData, setOrigindata] = useState();
-
   const diaryList = useContext(DiaryStateContext);
 
   useEffect(() => {

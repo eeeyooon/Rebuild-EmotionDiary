@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { DiaryStateContext } from "../App";
 import { getStringDate } from "../utils/date";
 import { emotionList } from "../utils/emotion";
-
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 

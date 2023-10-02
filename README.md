@@ -14,7 +14,7 @@
 
 <br/>
 
-💙 [새로운 감정 일기장 사용해보기](eeyooon-emotion-diary.web.app) (사용 전 [유의할 점](https://github.com/eeeyooon/Rebuild-EmotionDiary#%EB%B9%84%ED%9A%8C%EC%9B%90-%EB%A1%9C%EA%B7%B8%EC%9D%B8) 참고)
+💙 [새로운 감정 일기장 사용해보기](eeyooon-emotion-diary.web.app) (사용 전 [유의할 점](https://github.com/eeeyooon/Rebuild-EmotionDiary#%EC%9C%A0%EC%9D%98%ED%95%A0-%EC%A0%90) 참고)
 
 <br/>
 <br/>

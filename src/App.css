@@ -30,6 +30,10 @@ body {
   .App {
     width: 640px;
   }
+
+  .DiaryItem .emotion_img_wrapper {
+    width: 120px;
+  }
 }
 
 @media (max-width: 650px) {
@@ -37,14 +41,12 @@ body {
     width: 90wh;
   }
   .DiaryItem {
-    width: 350px;
+    width: 360px;
   }
 
-  .emotion_img_wrapper {
-    width: 100px;
-  }
-  .emotion_img_wrapper > img {
-    width: 100px;
+  .DiaryItem .info_wrapper {
+    width: 135px;
+    margin-right: 5px;
   }
 
   .login_wrapper {
@@ -59,6 +61,47 @@ body {
   }
   .ControlMenu {
     width: 105px;
+  }
+
+  .login_wrapper {
+    width: 400px;
+    display: flex;
+    align-items: center;
+  }
+
+  .login_wrapper > img {
+    width: 400px;
+  }
+
+  .thumbnail_text {
+    width: 285px;
+  }
+
+  .DiaryPage .head_btn_left .MyButton,
+  .DiaryPage .head_btn_right .MyButton,
+  .DiaryEditor .head_btn_left .MyButton,
+  .DiaryEditor .head_btn_right .MyButton {
+    font-size: 18px;
+    width: 90px;
+    padding: 10px 10px;
+  }
+
+  .DiaryPage .head_text {
+    width: 150px;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .DiaryEditor .head_text {
+    font-size: 20px;
+  }
+
+  .Modal_Box {
+    transform: translate(50%, 0);
+    top: 45%;
+    left: -25%;
+    z-index: 20;
   }
 }
 
@@ -270,7 +313,7 @@ header button {
 
 .DiaryItem .emotion_img_wrapper {
   cursor: pointer;
-  min-width: 120px;
+  min-width: 80px;
   height: 80px;
   border-radius: 5px;
   display: flex;
@@ -314,14 +357,13 @@ header button {
 }
 
 .DiaryItem .btn_wrapper {
-  min-width: 70px;
+  min-width: 60px;
 }
 
 /* DiaryEditor */
 
 .DiaryEditor {
   user-select: none;
-  /* position: relative; */
   padding: 0 20px;
 }
 

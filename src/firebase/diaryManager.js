@@ -31,9 +31,9 @@ export const createDiary = async (data) => {
   });
 };
 
-export const updateDiary = async (id, data) => {
+export const updateDiary = async (id, updatedData) => {
   const docRef = doc(diaryCollectionRef, id);
-  await updateDoc(docRef, data);
+  await updateDoc(docRef, updatedData);
 };
 
 export const deleteDiary = async (id) => {

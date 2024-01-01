@@ -19,7 +19,8 @@ const DiaryEditor = ({ isEdit, originData }) => {
   const [modalStatus, setModalStatus] = useState("");
   const [modalCheck, setModalCheck] = useState(false);
 
-  const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
+  const { handleCreate, handleEdit, handleRemove } =
+    useContext(DiaryDispatchContext);
   const handleClickEmote = useCallback((emotion) => {
     setEmotion(emotion);
   }, []);
@@ -36,10 +37,10 @@ const DiaryEditor = ({ isEdit, originData }) => {
 
     if (modalCheck) {
       if (!isEdit) {
-        onCreate(date, content, emotion);
+        handleCreate(date, content, emotion);
         setModalCheck(false);
       } else {
-        onEdit(originData.diaryId, date, content, emotion);
+        handleEdit(originData.diaryId, date, content, emotion);
         setModalCheck(false);
       }
     }
@@ -51,14 +52,14 @@ const DiaryEditor = ({ isEdit, originData }) => {
       if (modalStatus === "수정" || modalStatus === "작성") {
         handleSubmit();
       } else if (modalStatus === "삭제") {
-        handleRemove();
+        handleDiaryRemove();
       }
     }
   }, [modalCheck, modalStatus]);
 
-  const handleRemove = () => {
+  const handleDiaryRemove = () => {
     if (modalCheck) {
-      onRemove(originData.diaryId);
+      handleRemove(originData.diaryId);
       navigate("/home", { replace: true });
       setModalCheck(false);
     }
@@ -89,7 +90,6 @@ const DiaryEditor = ({ isEdit, originData }) => {
                 text={"삭제하기"}
                 type={"negative"}
                 onClick={() => {
-                  // handleRemove();
                   setModalStatus("삭제");
                   setOpenModal(true);
                 }}

@@ -4,31 +4,28 @@ import { DiaryStateContext } from "./../App";
 import MyHeader from "./../components/MyHeader";
 import MyButton from "./../components/MyButton";
 import DiaryList from "../components/DiaryList";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
   const [data, setData] = useState([]);
   const [curDate, setCurdate] = useState(new Date());
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+  const { user, updateUser } = useAuth();
+
   const navigate = useNavigate();
-  const [loginedUser, setLoginedUser] = useState(
-    localStorage.getItem("kakao_email")
-  );
-  const loginedUserName =
-    localStorage.getItem("kakao_email") === "test"
-      ? "비회원"
-      : localStorage.getItem("kakao_name");
 
   const handleLogout = () => {
-    localStorage.removeItem("kakao_email");
-    localStorage.removeItem("kakao_name");
-    setLoginedUser("");
+    try {
+      updateUser(null);
+      navigate("/login");
+    } catch (error) {
+      console.error("로그아웃 중 에러 발생:", error);
+      alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
+    }
   };
-
-  useEffect(() => {
-    if (!loginedUser) navigate("/login");
-  }, [loginedUser]);
+  const loginedUserName =
+    user === "test" ? "비회원" : localStorage.getItem("kakao_name");
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
@@ -56,7 +53,7 @@ const Home = () => {
         diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
       );
     }
-  }, [diaryList, curDate, loginedUser]);
+  }, [diaryList, curDate]);
 
   const increaseMonth = () => {
     setCurdate(

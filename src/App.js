@@ -6,8 +6,8 @@ import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
+import { useAuth } from "./hooks/useAuth";
 import { getDiaries } from "./firebase/diaryManager";
-
 import {
   diaryReducer,
   initialState,
@@ -22,15 +22,8 @@ export const DiaryDispatchContext = React.createContext();
 function App() {
   const [data, dispatch] = useReducer(diaryReducer, initialState);
   const [diaryList, setDiaryList] = useState([]);
-  const [user, setUser] = useState("");
 
-  useEffect(() => {
-    const loginedUser = localStorage.getItem("kakao_email");
-
-    if (loginedUser) {
-      setUser(loginedUser);
-    }
-  }, []);
+  const { user, updateUser } = useAuth();
 
   const getDiaryList = async () => {
     const dataArray = await getDiaries(user);
@@ -76,12 +69,27 @@ function App() {
         <BrowserRouter>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Navigate replace to="/login" />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login setUser={setUser} />} />
-              <Route path="/new" element={<New />} />
-              <Route path="/diary/:diaryId" element={<Diary />} />
-              <Route path="/edit/:diaryId" element={<Edit />} />
+              <Route
+                path="/"
+                element={<Navigate replace to={user ? "/home" : "/login"} />}
+              />
+              <Route
+                path="/home"
+                element={user ? <Home /> : <Navigate replace to="/login" />}
+              />
+              <Route path="/login" element={<Login setUser={updateUser} />} />
+              <Route
+                path="/new"
+                element={user ? <New /> : <Navigate replace to="/login" />}
+              />
+              <Route
+                path="/diary/:diaryId"
+                element={user ? <Diary /> : <Navigate replace to="/login" />}
+              />
+              <Route
+                path="/edit/:diaryId"
+                element={user ? <Edit /> : <Navigate replace to="/login" />}
+              />
             </Routes>
           </div>
         </BrowserRouter>

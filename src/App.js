@@ -6,44 +6,21 @@ import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
-import {
-  createDiary,
-  deleteDiary,
-  getDiaries,
-  updateDiary,
-} from "./firebase/diaryManager";
+import { getDiaries } from "./firebase/diaryManager";
 
-const reducer = (state, action) => {
-  let newState = [];
-  switch (action.type) {
-    case "INIT": {
-      return action.data;
-    }
-    case "CREATE": {
-      newState = [action.data, ...state];
-      break;
-    }
-    case "REMOVE": {
-      newState = state.filter((it) => it.diaryId !== action.targetId);
-      break;
-    }
-    case "EDIT": {
-      newState = state.map((it) =>
-        it.diaryId === action.data.diaryId ? { ...action.data } : it
-      );
-      break;
-    }
-    default:
-      return state;
-  }
-  return newState;
-};
+import {
+  diaryReducer,
+  initialState,
+  onCreate,
+  onRemove,
+  onEdit,
+} from "./reducer/diaryReducer";
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
+  const [data, dispatch] = useReducer(diaryReducer, initialState);
   const [diaryList, setDiaryList] = useState([]);
   const [user, setUser] = useState("");
 
@@ -64,6 +41,18 @@ function App() {
     getDiaryList();
   }, [user]);
 
+  const handleCreate = async (date, content, emotion) => {
+    await onCreate(dispatch, dataId, getDiaryList, date, content, emotion);
+  };
+
+  const handleRemove = async (targetId) => {
+    await onRemove(dispatch, data, getDiaryList, targetId);
+  };
+
+  const handleEdit = async (targetId, date, content, emotion) => {
+    await onEdit(dispatch, data, targetId, date, content, emotion);
+  };
+
   useEffect(() => {
     if (diaryList) {
       const sortedDiaryList = diaryList.sort(
@@ -79,73 +68,11 @@ function App() {
 
   const dataId = useRef(0);
 
-  // CREATE
-  const onCreate = async (date, content, emotion) => {
-    try {
-      const newData = {
-        diaryId: dataId.current,
-        emotion,
-        content,
-        date: new Date(date).getTime(),
-      };
-
-      await createDiary(newData);
-      dispatch({ type: "CREATE", data: newData });
-      dataId.current += 1;
-
-      getDiaryList();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // REMOVE
-  const onRemove = async (targetId) => {
-    try {
-      const targetData = data.find((item) => item.diaryId === targetId);
-      if (!targetData) {
-        console.error("해당 데이터를 찾을 수 없습니다.");
-        return;
-      }
-
-      await deleteDiary(targetData.id);
-
-      dispatch({ type: "REMOVE", targetId });
-      getDiaryList();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // EDIT
-  const onEdit = async (targetId, date, content, emotion) => {
-    try {
-      const targetData = data.find((item) => item.diaryId === targetId);
-
-      if (!targetData) {
-        console.error("해당 데이터를 찾을 수 없습니다.");
-        return;
-      }
-
-      const updatedData = {
-        emotion,
-        content,
-        date: new Date(date).getTime(),
-      };
-
-      await updateDiary(targetData.id, updatedData);
-
-      dispatch({
-        type: "EDIT",
-        data: { ...updatedData, diaryId: targetId, id: targetData.id },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <DiaryStateContext.Provider value={data}>
-      <DiaryDispatchContext.Provider value={{ onCreate, onRemove, onEdit }}>
+      <DiaryDispatchContext.Provider
+        value={{ handleCreate, handleRemove, handleEdit }}
+      >
         <BrowserRouter>
           <div className="App">
             <Routes>

@@ -6,19 +6,12 @@ import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
-
-// DB 관련
-import { db } from "./firebase/firebaseConfig";
 import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-  query,
-  where,
-} from "firebase/firestore";
+  createDiary,
+  deleteDiary,
+  getDiaries,
+  updateDiary,
+} from "./firebase/diaryManager";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -51,8 +44,7 @@ export const DiaryDispatchContext = React.createContext();
 
 function App() {
   const [data, dispatch] = useReducer(reducer, []);
-  const [diary, setDiary] = useState([]);
-  const diaryCollectionRef = collection(db, "diary");
+  const [diaryList, setDiaryList] = useState([]);
   const [user, setUser] = useState("");
 
   useEffect(() => {
@@ -63,59 +55,45 @@ function App() {
     }
   }, []);
 
-  const getDiary = async () => {
-    const diaryData = await getDocs(
-      query(diaryCollectionRef, where("user", "==", user))
-    );
-    const dataArray = diaryData.docs.map((doc) => ({
-      id: doc.id,
-      diaryId: doc.diaryId,
-      user: doc.user,
-      ...doc.data(),
-    }));
-    setDiary(dataArray);
+  const getDiaryList = async () => {
+    const dataArray = await getDiaries(user);
+    setDiaryList(dataArray);
   };
 
   useEffect(() => {
-    getDiary();
+    getDiaryList();
   }, [user]);
 
   useEffect(() => {
-    if (diary) {
-      const diaryList = diary.sort(
+    if (diaryList) {
+      const sortedDiaryList = diaryList.sort(
         (a, b) => parseInt(b.diaryId) - parseInt(a.diaryId)
       );
 
-      if (diaryList.length >= 1) {
-        dataId.current = parseInt(diaryList[0].diaryId) + 1;
-        dispatch({ type: "INIT", data: diaryList });
+      if (sortedDiaryList.length >= 1) {
+        dataId.current = parseInt(sortedDiaryList[0].diaryId) + 1;
+        dispatch({ type: "INIT", data: sortedDiaryList });
       }
     }
-  }, [diary]);
+  }, [diaryList]);
 
   const dataId = useRef(0);
 
   // CREATE
   const onCreate = async (date, content, emotion) => {
     try {
-      await addDoc(diaryCollectionRef, {
-        diaryId: dataId.current,
-        emotion,
-        content,
-        date: new Date(date).getTime(),
-        user: localStorage.getItem("kakao_email"),
-      });
-
       const newData = {
         diaryId: dataId.current,
         emotion,
         content,
         date: new Date(date).getTime(),
       };
+
+      await createDiary(newData);
       dispatch({ type: "CREATE", data: newData });
       dataId.current += 1;
 
-      getDiary();
+      getDiaryList();
     } catch (error) {
       console.error(error);
     }
@@ -129,13 +107,14 @@ function App() {
         console.error("해당 데이터를 찾을 수 없습니다.");
         return;
       }
-      await deleteDoc(doc(db, "diary", targetData.id));
 
-      getDiary();
+      await deleteDiary(targetData.id);
+
+      dispatch({ type: "REMOVE", targetId });
+      getDiaryList();
     } catch (error) {
       console.error(error);
     }
-    dispatch({ type: "REMOVE", targetId });
   };
 
   // EDIT
@@ -148,23 +127,18 @@ function App() {
         return;
       }
 
-      const docRef = doc(diaryCollectionRef, targetData.id);
-
-      await updateDoc(docRef, {
-        emotion,
-        content,
-        date: new Date(date).getTime(),
-      });
-
       const updatedData = {
-        diaryId: targetId,
         emotion,
         content,
-        id: targetData.id,
         date: new Date(date).getTime(),
       };
 
-      dispatch({ type: "EDIT", data: updatedData });
+      await updateDiary(targetData.id, updatedData);
+
+      dispatch({
+        type: "EDIT",
+        data: { ...updatedData, diaryId: targetId, id: targetData.id },
+      });
     } catch (error) {
       console.error(error);
     }

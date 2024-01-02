@@ -10,24 +10,17 @@ import {
   filterDiariesByMonth,
   increaseMonth,
 } from "../utils/date";
+import { useLogout } from "../hooks/useLogout";
 
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
   const [data, setData] = useState([]);
   const [curDate, setCurdate] = useState(new Date());
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
+  const { onLogout } = useLogout();
   const navigate = useNavigate();
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
 
-  const handleLogout = () => {
-    try {
-      updateUser(null);
-      navigate("/login");
-    } catch (error) {
-      console.error("로그아웃 중 에러 발생:", error);
-      alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
   const loginedUserName =
     user === "test" ? "비회원" : localStorage.getItem("kakao_name");
 
@@ -41,6 +34,11 @@ const Home = () => {
       setData(filterDiariesByMonth(diaryList, curDate));
     }
   }, [diaryList, curDate]);
+
+  const handleLogout = () => {
+    onLogout();
+    navigate("/login");
+  };
 
   const handleIncreaseMonth = () => {
     setCurdate(increaseMonth(curDate));

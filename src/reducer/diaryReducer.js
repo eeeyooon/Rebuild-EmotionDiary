@@ -1,5 +1,4 @@
 import { sortDiaryList } from "./../utils/sortDiaries";
-import { getDiaries } from "../firebase/diaryManager";
 import {
   createDiary,
   deleteDiary,

@@ -29,7 +29,7 @@ const Diary = () => {
         navigate("/home", { replace: true });
       }
     }
-  }, [diaryId, diaryList]);
+  }, [diaryId, diaryList, navigate]);
 
   if (!data) {
     return <div>로딩중입니다...</div>;

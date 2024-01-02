@@ -1,12 +1,6 @@
-import React, { useReducer, useEffect, useState, useRef } from "react";
+import React, { useReducer, useEffect, useRef } from "react";
 import "./App.css";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";

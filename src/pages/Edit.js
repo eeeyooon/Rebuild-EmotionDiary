@@ -12,7 +12,7 @@ const Edit = () => {
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
     titleElement.innerHTML = `감정 일기장 - ${diaryId}번 일기 수정`;
-  }, []);
+  }, [diaryId]);
 
   useEffect(() => {
     if (diaryList.length >= 1) {
@@ -26,7 +26,7 @@ const Edit = () => {
         navigate("/home", { replace: true });
       }
     }
-  }, [diaryId, diaryList]);
+  }, [diaryId, diaryList, navigate]);
 
   return (
     <div>

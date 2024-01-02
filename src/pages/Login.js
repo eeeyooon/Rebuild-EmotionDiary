@@ -53,7 +53,7 @@ function Login({ setUser }) {
         }
       };
     };
-  }, []);
+  }, [kakaoJs, navigate, setUser]);
 
   const handleTestLogin = () => {
     setUser("test");

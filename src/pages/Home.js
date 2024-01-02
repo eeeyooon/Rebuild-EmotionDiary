@@ -1,34 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { DiaryStateContext } from "./../App";
-
 import MyHeader from "./../components/MyHeader";
 import MyButton from "./../components/MyButton";
 import DiaryList from "../components/DiaryList";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import {
+  decreaseMonth,
+  filterDiariesByMonth,
+  increaseMonth,
+} from "../utils/date";
+import { useLogout } from "../hooks/useLogout";
 
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
   const [data, setData] = useState([]);
   const [curDate, setCurdate] = useState(new Date());
-  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+  const { user } = useAuth();
+  const { onLogout } = useLogout();
   const navigate = useNavigate();
-  const [loginedUser, setLoginedUser] = useState(
-    localStorage.getItem("kakao_email")
-  );
+  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+
   const loginedUserName =
-    localStorage.getItem("kakao_email") === "test"
-      ? "비회원"
-      : localStorage.getItem("kakao_name");
-
-  const handleLogout = () => {
-    localStorage.removeItem("kakao_email");
-    localStorage.removeItem("kakao_name");
-    setLoginedUser("");
-  };
-
-  useEffect(() => {
-    if (!loginedUser) navigate("/login");
-  }, [loginedUser]);
+    user === "test" ? "비회원" : localStorage.getItem("kakao_name");
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
@@ -37,45 +31,29 @@ const Home = () => {
 
   useEffect(() => {
     if (diaryList.length >= 1) {
-      const firstDay = new Date(
-        curDate.getFullYear(),
-        curDate.getMonth(),
-        1
-      ).getTime();
-
-      const lastDay = new Date(
-        curDate.getFullYear(),
-        curDate.getMonth() + 1,
-        0,
-        23,
-        59,
-        59
-      ).getTime();
-
-      setData(
-        diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
-      );
+      setData(filterDiariesByMonth(diaryList, curDate));
     }
-  }, [diaryList, curDate, loginedUser]);
+  }, [diaryList, curDate]);
 
-  const increaseMonth = () => {
-    setCurdate(
-      new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate())
-    );
+  const handleLogout = () => {
+    onLogout();
+    navigate("/login");
   };
 
-  const decreaseMonth = () => {
-    setCurdate(
-      new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate())
-    );
+  const handleIncreaseMonth = () => {
+    setCurdate(increaseMonth(curDate));
+  };
+
+  const handleDecreaseMonth = () => {
+    setCurdate(decreaseMonth(curDate));
   };
 
   return (
     <div>
       <MyHeader
         headText={headText}
-        leftChild={<MyButton text={"<"} onClick={decreaseMonth} />}
-        rightChild={<MyButton text={">"} onClick={increaseMonth} />}
+        leftChild={<MyButton text={"<"} onClick={handleDecreaseMonth} />}
+        rightChild={<MyButton text={">"} onClick={handleIncreaseMonth} />}
       />
       <DiaryList diaryList={data} />
       <footer className="myfooter">

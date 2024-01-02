@@ -15,7 +15,7 @@ const Diary = () => {
   useEffect(() => {
     const titleElement = document.getElementsByTagName("title")[0];
     titleElement.innerHTML = `감정 일기장 - ${diaryId}번 일기`;
-  }, []);
+  }, [diaryId]);
 
   useEffect(() => {
     if (diaryList.length >= 1) {
@@ -26,11 +26,10 @@ const Diary = () => {
       if (targetDiary) {
         setData(targetDiary);
       } else {
-        alert("없는 일기입니다.");
         navigate("/home", { replace: true });
       }
     }
-  }, [diaryId, diaryList]);
+  }, [diaryId, diaryList, navigate]);
 
   if (!data) {
     return <div>로딩중입니다...</div>;

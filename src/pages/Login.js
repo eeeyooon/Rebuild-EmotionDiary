@@ -5,6 +5,11 @@ function Login({ setUser }) {
   const navigate = useNavigate();
   const kakaoJs = process.env.REACT_APP_KAKAO_JS;
 
+  useEffect(() => {
+    localStorage.removeItem("kakao_email");
+    localStorage.removeItem("kakao_name");
+  }, []);
+
   // 카카오 로그인
   useEffect(() => {
     const script = document.createElement("script");
@@ -48,7 +53,7 @@ function Login({ setUser }) {
         }
       };
     };
-  }, []);
+  }, [kakaoJs, navigate, setUser]);
 
   const handleTestLogin = () => {
     setUser("test");

@@ -108,6 +108,7 @@ export const onEdit = async (
     const updatedData = {
       emotion,
       content,
+      user,
       date: new Date(date).getTime(),
     };
     await updateDiary(targetData.id, updatedData);

@@ -35,10 +35,9 @@ export const diaryReducer = (state, action) => {
 export const initialState = [];
 
 //INIT
-export const onInitialize = async (dispatch, user, setDataId) => {
+export const onInitialize = async (dispatch, user) => {
   const sortedDiaries = await sortDiaryList(user);
   if (sortDiaryList.length > 0) {
-    setDataId(sortedDiaries.length);
     dispatch({ type: "INIT", data: sortedDiaries });
   }
 };
@@ -50,21 +49,19 @@ export const onCreate = async (
   dataId,
   date,
   content,
-  emotion,
-  setDataId
+  emotion
 ) => {
   try {
     const newData = {
       diaryId: dataId,
       emotion,
       content,
+      user,
       date: new Date(date).getTime(),
     };
 
     await createDiary(newData);
     dispatch({ type: "CREATE", data: newData });
-    setDataId(dataId + 1);
-    await getDiaries(user);
   } catch (error) {
     console.error(error);
   }
@@ -73,16 +70,16 @@ export const onCreate = async (
 // REMOVE
 export const onRemove = async (dispatch, user, data, targetId) => {
   try {
-    const targetData = data.find((item) => item.diaryId === targetId);
+    const targetData = data.find(
+      (item) => item.diaryId === targetId && item.user === user
+    );
     if (!targetData) {
       console.error("해당 데이터를 찾을 수 없습니다.");
       return;
     }
 
     await deleteDiary(targetData.id);
-
     dispatch({ type: "REMOVE", targetId });
-    getDiaries(user);
   } catch (error) {
     console.error(error);
   }
@@ -95,10 +92,13 @@ export const onEdit = async (
   targetId,
   date,
   content,
-  emotion
+  emotion,
+  user
 ) => {
   try {
-    const targetData = data.find((item) => item.diaryId === targetId);
+    const targetData = data.find(
+      (item) => item.diaryId === targetId && item.user === user
+    );
 
     if (!targetData) {
       console.error("해당 데이터를 찾을 수 없습니다.");

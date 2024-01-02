@@ -1,6 +1,12 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState, useRef } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
@@ -15,6 +21,7 @@ import {
   onEdit,
   onInitialize,
 } from "./reducer/diaryReducer";
+import { getDiaries } from "./firebase/diaryManager";
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
@@ -22,24 +29,36 @@ export const DiaryDispatchContext = React.createContext();
 function App() {
   const [data, dispatch] = useReducer(diaryReducer, initialState);
   const { user, updateUser } = useAuth();
-  const [dataId, setDataId] = useState(0);
+
+  const dataIdRef = useRef(0);
 
   useEffect(() => {
     if (user) {
-      onInitialize(dispatch, user, setDataId);
+      onInitialize(dispatch, user);
+
+      getDiaries(user).then((diaries) => {
+        if (diaries.length > 0) {
+          const maxDataId = Math.max(...diaries.map((diary) => diary.diaryId));
+          dataIdRef.current = maxDataId + 1;
+        }
+      });
     }
   }, [user, dispatch]);
 
   const handleCreate = async (date, content, emotion) => {
-    await onCreate(dispatch, user, dataId, date, content, emotion, setDataId);
+    await onCreate(dispatch, user, dataIdRef.current, date, content, emotion);
+    dataIdRef.current += 1;
   };
 
-  const handleRemove = async (targetId) => {
+  const handleRemove = async (targetId, callback) => {
     await onRemove(dispatch, user, data, targetId);
+    if (callback) {
+      callback();
+    }
   };
 
   const handleEdit = async (targetId, date, content, emotion) => {
-    await onEdit(dispatch, data, targetId, date, content, emotion);
+    await onEdit(dispatch, data, targetId, date, content, emotion, user);
   };
 
   return (

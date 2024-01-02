@@ -55,12 +55,14 @@ const DiaryEditor = ({ isEdit, originData }) => {
         handleDiaryRemove();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalCheck, modalStatus]);
 
   const handleDiaryRemove = () => {
     if (modalCheck) {
-      handleRemove(originData.diaryId);
-      navigate("/home", { replace: true });
+      handleRemove(originData.diaryId, () => {
+        navigate("/home", { replace: true });
+      });
       setModalCheck(false);
     }
   };

@@ -35,9 +35,10 @@ export const diaryReducer = (state, action) => {
 export const initialState = [];
 
 //INIT
-export const onInitialize = async (dispatch, user) => {
+export const onInitialize = async (dispatch, user, setDataId) => {
   const sortedDiaries = await sortDiaryList(user);
   if (sortDiaryList.length > 0) {
+    setDataId(sortedDiaries.length);
     dispatch({ type: "INIT", data: sortedDiaries });
   }
 };
@@ -49,11 +50,12 @@ export const onCreate = async (
   dataId,
   date,
   content,
-  emotion
+  emotion,
+  setDataId
 ) => {
   try {
     const newData = {
-      diaryId: dataId.current,
+      diaryId: dataId,
       emotion,
       content,
       date: new Date(date).getTime(),
@@ -61,8 +63,7 @@ export const onCreate = async (
 
     await createDiary(newData);
     dispatch({ type: "CREATE", data: newData });
-    dataId.current += 1;
-
+    setDataId(dataId + 1);
     await getDiaries(user);
   } catch (error) {
     console.error(error);

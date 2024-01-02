@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
@@ -22,16 +22,16 @@ export const DiaryDispatchContext = React.createContext();
 function App() {
   const [data, dispatch] = useReducer(diaryReducer, initialState);
   const { user, updateUser } = useAuth();
-  const dataId = useRef(0);
+  const [dataId, setDataId] = useState(0);
 
   useEffect(() => {
     if (user) {
-      onInitialize(dispatch, user);
+      onInitialize(dispatch, user, setDataId);
     }
   }, [user, dispatch]);
 
   const handleCreate = async (date, content, emotion) => {
-    await onCreate(dispatch, user, dataId, date, content, emotion);
+    await onCreate(dispatch, user, dataId, date, content, emotion, setDataId);
   };
 
   const handleRemove = async (targetId) => {

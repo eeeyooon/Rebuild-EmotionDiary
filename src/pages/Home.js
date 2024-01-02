@@ -6,6 +6,7 @@ import MyButton from "./../components/MyButton";
 import DiaryList from "../components/DiaryList";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { decreaseMonth, increaseMonth } from "../utils/date";
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
   const [data, setData] = useState([]);
@@ -55,24 +56,20 @@ const Home = () => {
     }
   }, [diaryList, curDate]);
 
-  const increaseMonth = () => {
-    setCurdate(
-      new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate())
-    );
+  const handleIncreaseMonth = () => {
+    setCurdate(increaseMonth(curDate));
   };
 
-  const decreaseMonth = () => {
-    setCurdate(
-      new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate())
-    );
+  const handleDecreaseMonth = () => {
+    setCurdate(decreaseMonth(curDate));
   };
 
   return (
     <div>
       <MyHeader
         headText={headText}
-        leftChild={<MyButton text={"<"} onClick={decreaseMonth} />}
-        rightChild={<MyButton text={">"} onClick={increaseMonth} />}
+        leftChild={<MyButton text={"<"} onClick={handleDecreaseMonth} />}
+        rightChild={<MyButton text={">"} onClick={handleIncreaseMonth} />}
       />
       <DiaryList diaryList={data} />
       <footer className="myfooter">

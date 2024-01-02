@@ -15,3 +15,19 @@ export const getStringDate = (date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const increaseMonth = (currentDate) => {
+  return new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    currentDate.getDate()
+  );
+};
+
+export const decreaseMonth = (currentDate) => {
+  return new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() - 1,
+    currentDate.getDate()
+  );
+};

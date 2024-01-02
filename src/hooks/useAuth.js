@@ -9,7 +9,11 @@ export const useAuth = () => {
   }, []);
 
   const updateUser = useCallback((email) => {
-    localStorage.setItem("kakao_email", email);
+    if (email) {
+      localStorage.setItem("kakao_email", email);
+    } else {
+      localStorage.removeItem("kakao_email");
+    }
     setUser(email);
   }, []);
 

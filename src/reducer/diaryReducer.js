@@ -1,3 +1,5 @@
+import { sortDiaryList } from "./../utils/sortDiaries";
+import { getDiaries } from "../firebase/diaryManager";
 import {
   createDiary,
   deleteDiary,
@@ -32,11 +34,19 @@ export const diaryReducer = (state, action) => {
 
 export const initialState = [];
 
+//INIT
+export const onInitialize = async (dispatch, user) => {
+  const sortedDiaries = await sortDiaryList(user);
+  if (sortDiaryList.length > 0) {
+    dispatch({ type: "INIT", data: sortedDiaries });
+  }
+};
+
 // CREATE
 export const onCreate = async (
   dispatch,
+  user,
   dataId,
-  getDiaryList,
   date,
   content,
   emotion
@@ -53,14 +63,14 @@ export const onCreate = async (
     dispatch({ type: "CREATE", data: newData });
     dataId.current += 1;
 
-    getDiaryList();
+    await getDiaries(user);
   } catch (error) {
     console.error(error);
   }
 };
 
 // REMOVE
-export const onRemove = async (dispatch, data, getDiaryList, targetId) => {
+export const onRemove = async (dispatch, user, data, targetId) => {
   try {
     const targetData = data.find((item) => item.diaryId === targetId);
     if (!targetData) {
@@ -71,7 +81,7 @@ export const onRemove = async (dispatch, data, getDiaryList, targetId) => {
     await deleteDiary(targetData.id);
 
     dispatch({ type: "REMOVE", targetId });
-    getDiaryList();
+    getDiaries(user);
   } catch (error) {
     console.error(error);
   }

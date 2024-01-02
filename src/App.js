@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useEffect, useState } from "react";
+import React, { useReducer, useRef, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
@@ -7,13 +7,13 @@ import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Login from "./pages/Login";
 import { useAuth } from "./hooks/useAuth";
-import { getDiaries } from "./firebase/diaryManager";
 import {
   diaryReducer,
   initialState,
   onCreate,
   onRemove,
   onEdit,
+  onInitialize,
 } from "./reducer/diaryReducer";
 
 export const DiaryStateContext = React.createContext();
@@ -21,45 +21,26 @@ export const DiaryDispatchContext = React.createContext();
 
 function App() {
   const [data, dispatch] = useReducer(diaryReducer, initialState);
-  const [diaryList, setDiaryList] = useState([]);
-
   const { user, updateUser } = useAuth();
-
-  const getDiaryList = async () => {
-    const dataArray = await getDiaries(user);
-    setDiaryList(dataArray);
-  };
+  const dataId = useRef(0);
 
   useEffect(() => {
-    getDiaryList();
-  }, [user]);
+    if (user) {
+      onInitialize(dispatch, user);
+    }
+  }, [user, dispatch]);
 
   const handleCreate = async (date, content, emotion) => {
-    await onCreate(dispatch, dataId, getDiaryList, date, content, emotion);
+    await onCreate(dispatch, user, dataId, date, content, emotion);
   };
 
   const handleRemove = async (targetId) => {
-    await onRemove(dispatch, data, getDiaryList, targetId);
+    await onRemove(dispatch, user, data, targetId);
   };
 
   const handleEdit = async (targetId, date, content, emotion) => {
     await onEdit(dispatch, data, targetId, date, content, emotion);
   };
-
-  useEffect(() => {
-    if (diaryList) {
-      const sortedDiaryList = diaryList.sort(
-        (a, b) => parseInt(b.diaryId) - parseInt(a.diaryId)
-      );
-
-      if (sortedDiaryList.length >= 1) {
-        dataId.current = parseInt(sortedDiaryList[0].diaryId) + 1;
-        dispatch({ type: "INIT", data: sortedDiaryList });
-      }
-    }
-  }, [diaryList]);
-
-  const dataId = useRef(0);
 
   return (
     <DiaryStateContext.Provider value={data}>

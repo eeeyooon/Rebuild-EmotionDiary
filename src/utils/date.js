@@ -31,3 +31,23 @@ export const decreaseMonth = (currentDate) => {
     currentDate.getDate()
   );
 };
+
+export const filterDiariesByMonth = (diaryList, curDate) => {
+  const firstDay = new Date(
+    curDate.getFullYear(),
+    curDate.getMonth(),
+    1
+  ).getTime();
+  const lastDay = new Date(
+    curDate.getFullYear(),
+    curDate.getMonth() + 1,
+    0,
+    23,
+    59,
+    59
+  ).getTime();
+
+  return diaryList.filter(
+    (diary) => firstDay <= diary.date && diary.date <= lastDay
+  );
+};

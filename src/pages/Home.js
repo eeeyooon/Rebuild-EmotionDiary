@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { DiaryStateContext } from "./../App";
-
 import MyHeader from "./../components/MyHeader";
 import MyButton from "./../components/MyButton";
 import DiaryList from "../components/DiaryList";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { decreaseMonth, increaseMonth } from "../utils/date";
+import {
+  decreaseMonth,
+  filterDiariesByMonth,
+  increaseMonth,
+} from "../utils/date";
+
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
   const [data, setData] = useState([]);
   const [curDate, setCurdate] = useState(new Date());
-  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
   const { user, updateUser } = useAuth();
-
   const navigate = useNavigate();
+  const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
 
   const handleLogout = () => {
     try {
@@ -35,24 +38,7 @@ const Home = () => {
 
   useEffect(() => {
     if (diaryList.length >= 1) {
-      const firstDay = new Date(
-        curDate.getFullYear(),
-        curDate.getMonth(),
-        1
-      ).getTime();
-
-      const lastDay = new Date(
-        curDate.getFullYear(),
-        curDate.getMonth() + 1,
-        0,
-        23,
-        59,
-        59
-      ).getTime();
-
-      setData(
-        diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
-      );
+      setData(filterDiariesByMonth(diaryList, curDate));
     }
   }, [diaryList, curDate]);
 

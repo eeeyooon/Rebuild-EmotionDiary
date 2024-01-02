@@ -12,14 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Echo Env
-      - run: 
-      echo "REACT_APP_API_KEY=${{secrets.REACT_APP_API_KEY}}" >> .env
-      echo "REACT_APP_AUTH_DOMAIN=${{secrets.REACT_APP_AUTH_DOMAIN}}" >> .env
-      echo "REACT_APP_PROJECT_ID=${{secrets.REACT_APP_PROJECT_ID}}" >> .env
-      echo "REACT_APP_STORAGE_BUCKET=${{secrets.REACT_APP_STORAGE_BUCKET}}" >> .env
-      echo "REACT_APP_MESSAGE_SENDER_ID=${{secrets.REACT_APP_MESSAGE_SENDER_ID}}" >> .env
-      echo "REACT_APP_APP_ID=${{secrets.REACT_APP_APP_ID}}" >> .env
-      echo "REACT_APP_KAKAO_JS=${{secrets.REACT_APP_KAKAO_JS}}" >> .env
+      - run: |
+            echo "REACT_APP_API_KEY=${{secrets.REACT_APP_API_KEY}}" >> .env
+            echo "REACT_APP_AUTH_DOMAIN=${{secrets.REACT_APP_AUTH_DOMAIN}}" >> .env
+            echo "REACT_APP_PROJECT_ID=${{secrets.REACT_APP_PROJECT_ID}}" >> .env
+            echo "REACT_APP_STORAGE_BUCKET=${{secrets.REACT_APP_STORAGE_BUCKET}}" >> .env
+            echo "REACT_APP_MESSAGE_SENDER_ID=${{secrets.REACT_APP_MESSAGE_SENDER_ID}}" >> .env
+            echo "REACT_APP_APP_ID=${{secrets.REACT_APP_APP_ID}}" >> .env
+            echo "REACT_APP_KAKAO_JS=${{secrets.REACT_APP_KAKAO_JS}}" >> .env
       - name: Cat Env
       - run: cat .env
       - run: npm ci && npm run build

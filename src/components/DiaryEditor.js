@@ -3,11 +3,11 @@ import { useState, useRef, useContext, useEffect, useCallback } from "react";
 import { DiaryDispatchContext } from "./../App.js";
 import { getStringDate } from "../utils/date.js";
 import { emotionList } from "../utils/emotion.js";
-
 import MyButton from "./MyButton";
 import MyHeader from "./MyHeader";
 import EmotionItem from "./EmotionItem";
 import Modal from "./Modal";
+import { useMoal } from "../hooks/useModal.js";
 
 const DiaryEditor = ({ isEdit, originData }) => {
   const contentRef = useRef();
@@ -15,58 +15,54 @@ const DiaryEditor = ({ isEdit, originData }) => {
   const [emotion, setEmotion] = useState(3);
   const [date, setDate] = useState(getStringDate(new Date()));
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
-  const [modalStatus, setModalStatus] = useState("");
-  const [modalCheck, setModalCheck] = useState(false);
 
+  // 모달 관련 로직
+  const {
+    isOpen,
+    toggleModal,
+    status,
+    setModalStatus,
+    userSelected,
+    setModalSelected,
+  } = useMoal();
+
+  // 일기 CUD 관련 로직
   const { handleCreate, handleEdit, handleRemove } =
     useContext(DiaryDispatchContext);
   const handleClickEmote = useCallback((emotion) => {
     setEmotion(emotion);
   }, []);
 
-  const handleModal = (modalState) => {
-    setOpenModal(modalState);
-  };
-
+  // 일기 작성 및 수정
   const handleSubmit = () => {
     if (content.legth < 1) {
       contentRef.current.focus();
       return;
     }
 
-    if (modalCheck) {
+    if (userSelected) {
       if (!isEdit) {
         handleCreate(date, content, emotion);
-        setModalCheck(false);
+        setModalSelected(false);
       } else {
         handleEdit(originData.diaryId, date, content, emotion);
-        setModalCheck(false);
+        setModalSelected(false);
       }
     }
     navigate("/home", { replace: true });
   };
 
-  useEffect(() => {
-    if (modalCheck) {
-      if (modalStatus === "수정" || modalStatus === "작성") {
-        handleSubmit();
-      } else if (modalStatus === "삭제") {
-        handleDiaryRemove();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalCheck, modalStatus]);
-
+  // 일기 삭제
   const handleDiaryRemove = () => {
-    if (modalCheck) {
+    if (userSelected) {
       handleRemove(originData.diaryId, () => {
         navigate("/home", { replace: true });
       });
-      setModalCheck(false);
+      setModalSelected(false);
     }
   };
 
+  // 일기 수정일 때
   useEffect(() => {
     if (isEdit) {
       setDate(getStringDate(new Date(parseInt(originData.date))));
@@ -75,10 +71,22 @@ const DiaryEditor = ({ isEdit, originData }) => {
     }
   }, [isEdit, originData]);
 
+  // 모달 status
+  useEffect(() => {
+    if (userSelected) {
+      if (status === "수정" || status === "작성") {
+        handleSubmit();
+      } else if (status === "삭제") {
+        handleDiaryRemove();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userSelected, status]);
+
   return (
     <>
-      {openModal && (
-        <div className="Modal_Background" onClick={() => setOpenModal(false)} />
+      {isOpen && (
+        <div className="Modal_Background" onClick={() => toggleModal(false)} />
       )}
       <div className="DiaryEditor">
         <MyHeader
@@ -93,7 +101,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
                 type={"negative"}
                 onClick={() => {
                   setModalStatus("삭제");
-                  setOpenModal(true);
+                  toggleModal(true);
                 }}
               />
             )
@@ -141,18 +149,18 @@ const DiaryEditor = ({ isEdit, originData }) => {
               text={isEdit ? "수정완료" : "작성완료"}
               type={"positive"}
               onClick={() => {
-                setOpenModal(true);
+                toggleModal(true);
                 setModalStatus(isEdit ? "수정" : "작성");
               }}
             />
           </div>
         </section>
-        {openModal && (
+        {isOpen && (
           <div className="Modal_Box">
             <Modal
-              handleModal={handleModal}
-              modalStatus={modalStatus}
-              setModalCheck={setModalCheck}
+              handleModal={(modalState) => toggleModal(modalState)}
+              status={status}
+              setModalSelected={setModalSelected}
             />
           </div>
         )}

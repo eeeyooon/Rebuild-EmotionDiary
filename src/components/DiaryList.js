@@ -4,29 +4,12 @@ import { useNavigate } from "react-router-dom";
 import DiaryItem from "./DiaryItem";
 import { sortOptionList, filterOptionList } from "../const/options";
 import { getProcessedDiaryList } from "../utils/filtersortList";
-
-const ControlMenu = React.memo(({ value, onChange, optionList }) => {
-  return (
-    <select
-      className="ControlMenu"
-      value={value}
-      name={value}
-      onChange={(e) => onChange(e.target.value)}
-    >
-      {optionList.map((it, idx) => (
-        <option key={idx} value={it.value}>
-          {it.name}
-        </option>
-      ))}
-    </select>
-  );
-});
+import ControlMenu from "./ControlMenu";
 
 const DiaryList = ({ diaryList }) => {
   const navigate = useNavigate();
   const [sortType, setSortType] = useState("latest");
   const [filter, setFilter] = useState("all");
-
   const processedDiaryList = getProcessedDiaryList(diaryList, filter, sortType);
 
   return (

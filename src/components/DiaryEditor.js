@@ -8,6 +8,7 @@ import MyButton from "./MyButton";
 import MyHeader from "./MyHeader";
 import EmotionItem from "./EmotionItem";
 import Modal from "./Modal";
+import { useMoal } from "../hooks/useModal.js";
 
 const DiaryEditor = ({ isEdit, originData }) => {
   const contentRef = useRef();
@@ -15,10 +16,14 @@ const DiaryEditor = ({ isEdit, originData }) => {
   const [emotion, setEmotion] = useState(3);
   const [date, setDate] = useState(getStringDate(new Date()));
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
-  const [modalStatus, setModalStatus] = useState("");
-  const [modalCheck, setModalCheck] = useState(false);
-
+  const {
+    isOpen,
+    toggleModal,
+    status,
+    setModalStatus,
+    userSelected,
+    setModalSelected,
+  } = useMoal();
   const { handleCreate, handleEdit, handleRemove } =
     useContext(DiaryDispatchContext);
   const handleClickEmote = useCallback((emotion) => {
@@ -26,7 +31,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
   }, []);
 
   const handleModal = (modalState) => {
-    setOpenModal(modalState);
+    toggleModal(modalState);
   };
 
   const handleSubmit = () => {
@@ -35,35 +40,35 @@ const DiaryEditor = ({ isEdit, originData }) => {
       return;
     }
 
-    if (modalCheck) {
+    if (userSelected) {
       if (!isEdit) {
         handleCreate(date, content, emotion);
-        setModalCheck(false);
+        setModalSelected(false);
       } else {
         handleEdit(originData.diaryId, date, content, emotion);
-        setModalCheck(false);
+        setModalSelected(false);
       }
     }
     navigate("/home", { replace: true });
   };
 
   useEffect(() => {
-    if (modalCheck) {
-      if (modalStatus === "수정" || modalStatus === "작성") {
+    if (userSelected) {
+      if (status === "수정" || status === "작성") {
         handleSubmit();
-      } else if (modalStatus === "삭제") {
+      } else if (status === "삭제") {
         handleDiaryRemove();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalCheck, modalStatus]);
+  }, [userSelected, status]);
 
   const handleDiaryRemove = () => {
-    if (modalCheck) {
+    if (userSelected) {
       handleRemove(originData.diaryId, () => {
         navigate("/home", { replace: true });
       });
-      setModalCheck(false);
+      setModalSelected(false);
     }
   };
 
@@ -77,8 +82,8 @@ const DiaryEditor = ({ isEdit, originData }) => {
 
   return (
     <>
-      {openModal && (
-        <div className="Modal_Background" onClick={() => setOpenModal(false)} />
+      {isOpen && (
+        <div className="Modal_Background" onClick={() => toggleModal(false)} />
       )}
       <div className="DiaryEditor">
         <MyHeader
@@ -93,7 +98,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
                 type={"negative"}
                 onClick={() => {
                   setModalStatus("삭제");
-                  setOpenModal(true);
+                  toggleModal(true);
                 }}
               />
             )
@@ -141,18 +146,18 @@ const DiaryEditor = ({ isEdit, originData }) => {
               text={isEdit ? "수정완료" : "작성완료"}
               type={"positive"}
               onClick={() => {
-                setOpenModal(true);
+                toggleModal(true);
                 setModalStatus(isEdit ? "수정" : "작성");
               }}
             />
           </div>
         </section>
-        {openModal && (
+        {isOpen && (
           <div className="Modal_Box">
             <Modal
               handleModal={handleModal}
-              modalStatus={modalStatus}
-              setModalCheck={setModalCheck}
+              status={status}
+              setModalSelected={setModalSelected}
             />
           </div>
         )}

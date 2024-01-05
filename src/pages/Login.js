@@ -66,8 +66,6 @@ function Login({ setUser }) {
       <img
         src={process.env.PUBLIC_URL + "/assets/emotion_thumbnail.png"}
         alt="감정일기장 썸네일"
-        width={400}
-        height={225}
         fetchpriority="high"
       />
       <p className="thumbnail_text">

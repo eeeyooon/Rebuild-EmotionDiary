@@ -27,6 +27,9 @@ const DiaryItem = ({ diaryId, emotion, content, date }) => {
         <img
           src={process.env.PUBLIC_URL + `assets/emotion${emotion}.png`}
           alt="감정 아이콘"
+          width={80}
+          height={80}
+          fetchpriority="high"
         />
       </div>
       <div onClick={goDetail} className="info_wrapper">

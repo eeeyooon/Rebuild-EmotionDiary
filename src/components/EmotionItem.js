@@ -15,7 +15,13 @@ const EmotionItem = ({
         isSelected ? `EmotionItem_on_${emotion_id}` : `EmotionItem_off`,
       ].join(" ")}
     >
-      <img src={emotion_img} alt="감정 아이콘" />
+      <img
+        src={emotion_img}
+        alt="감정 아이콘"
+        width={80}
+        height={80}
+        fetchpriority="high"
+      />
       <span>{emotion_descript}</span>
     </button>
   );

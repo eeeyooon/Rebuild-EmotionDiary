@@ -66,6 +66,7 @@ function Login({ setUser }) {
       <img
         src={process.env.PUBLIC_URL + "/assets/emotion_thumbnail.png"}
         alt="감정일기장 썸네일"
+        fetchpriority="high"
       />
       <p className="thumbnail_text">
         하루의 일상과 그 날 느낀 감정을 함께 기록하는 감정 일기장
@@ -76,6 +77,8 @@ function Login({ setUser }) {
           className="kakao_logo"
           alt="카카오 로고"
           src={process.env.PUBLIC_URL + "/assets/kakao_logo.svg"}
+          width={18}
+          height={18}
         />
         카카오 로그인
       </button>

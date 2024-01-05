@@ -60,15 +60,15 @@ const Home = () => {
         <div>
           <img
             src={process.env.PUBLIC_URL + "/assets/logo.png"}
-            alt="로고 아이콘"
+            alt="감정일기장 로고 아이콘"
+            width={16}
+            height={16}
           />
           <span>{loginedUserName}님의 감정 일기장</span>
         </div>
-        {loginedUserName !== "비회원" && (
-          <button className="logout_btn" onClick={handleLogout}>
-            로그아웃
-          </button>
-        )}
+        <button className="logout_btn" onClick={handleLogout}>
+          {loginedUserName !== "비회원" ? "로그아웃" : "로그인 하러가기"}
+        </button>
       </footer>
     </div>
   );

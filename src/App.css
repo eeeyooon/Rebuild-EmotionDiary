@@ -31,6 +31,10 @@ body {
     width: 640px;
   }
 
+  .Spinner {
+    width: 640px;
+  }
+
   .DiaryItem .emotion_img_wrapper {
     width: 120px;
   }
@@ -38,6 +42,10 @@ body {
 
 @media (max-width: 650px) {
   .App {
+    width: 90wh;
+  }
+
+  .Spinner {
     width: 90wh;
   }
   .DiaryItem {
@@ -365,6 +373,8 @@ header button {
 .DiaryEditor {
   user-select: none;
   padding: 0 20px;
+
+  position: relative;
 }
 
 .DiaryEditor section {
@@ -441,7 +451,7 @@ header button {
 }
 
 .EmotionItem img {
-  width: 50%;
+  margin: 0 2px;
   margin-bottom: 10px;
 }
 
@@ -640,4 +650,36 @@ header button {
   cursor: pointer;
   width: 60px;
   font-size: 18px;
+}
+
+/* Spinner */
+.Spinner {
+  width: 640px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Toast */
+.ToastContainer {
+  z-index: 20;
+  position: absolute;
+  transform: translate(0, 0);
+  top: 50%;
+  left: 25%;
+}
+
+.ToastWrapper {
+  width: 300px;
+  height: 50px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  color: #1c1c1c;
+  font-size: 18px;
+  font-family: "Dovemayo_gothic";
+  text-align: center;
+  line-height: 50px;
+  opacity: 95%;
+  box-shadow: 1px 1px 1px 0px #e2e2e2;
 }

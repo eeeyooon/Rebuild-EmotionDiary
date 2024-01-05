@@ -451,7 +451,7 @@ header button {
 }
 
 .EmotionItem img {
-  width: 50%;
+  margin: 0 2px;
   margin-bottom: 10px;
 }
 

@@ -1,12 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 export const useAuth = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const loginedUser = localStorage.getItem("kakao_email");
-    setUser(loginedUser);
-  }, []);
+    return loginedUser;
+  });
 
   const updateUser = useCallback((email) => {
     if (email) {

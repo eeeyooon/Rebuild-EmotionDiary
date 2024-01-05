@@ -61,7 +61,13 @@ const Diary = () => {
                 `diary_img_wrapper_${data.emotion}`,
               ].join(" ")}
             >
-              <img src={curEmotionData.emotion_img} alt="감정 아이콘" />
+              <img
+                src={curEmotionData.emotion_img}
+                alt="감정 아이콘"
+                width={80}
+                height={80}
+                fetchpriority="high"
+              />
               <div className="emotion_descript">
                 {curEmotionData.emotion_descript}
               </div>

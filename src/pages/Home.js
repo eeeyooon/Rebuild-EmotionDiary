@@ -11,7 +11,6 @@ import {
   increaseMonth,
 } from "../utils/date";
 import { useLogout } from "../hooks/useLogout";
-import Spinner from "../components/Spinner";
 
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);

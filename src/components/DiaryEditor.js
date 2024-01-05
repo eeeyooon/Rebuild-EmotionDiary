@@ -8,12 +8,14 @@ import MyHeader from "./MyHeader";
 import EmotionItem from "./EmotionItem";
 import Modal from "./Modal";
 import { useMoal } from "../hooks/useModal.js";
+import Toast from "./Toast.js";
 
 const DiaryEditor = ({ isEdit, originData }) => {
   const contentRef = useRef();
   const [content, setContent] = useState("");
   const [emotion, setEmotion] = useState(3);
   const [date, setDate] = useState(getStringDate(new Date()));
+  const [openToast, setOpenToast] = useState(false);
   const navigate = useNavigate();
 
   // 모달 관련 로직
@@ -83,6 +85,23 @@ const DiaryEditor = ({ isEdit, originData }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSelected, status]);
 
+  const handleNoContent = () => {
+    setOpenToast(true);
+  };
+
+  const handleNewContent = () => {
+    toggleModal(true);
+    setModalStatus(isEdit ? "수정" : "작성");
+  };
+
+  useEffect(() => {
+    if (openToast) {
+      const timer = setTimeout(() => setOpenToast(false), 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [openToast]);
+
   return (
     <>
       {isOpen && (
@@ -148,10 +167,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
             <MyButton
               text={isEdit ? "수정완료" : "작성완료"}
               type={"positive"}
-              onClick={() => {
-                toggleModal(true);
-                setModalStatus(isEdit ? "수정" : "작성");
-              }}
+              onClick={content ? handleNewContent : handleNoContent}
             />
           </div>
         </section>
@@ -162,6 +178,11 @@ const DiaryEditor = ({ isEdit, originData }) => {
               status={status}
               setModalSelected={setModalSelected}
             />
+          </div>
+        )}
+        {openToast && (
+          <div className="ToastContainer">
+            <Toast text={"일기를 작성해주세요."} />
           </div>
         )}
       </div>

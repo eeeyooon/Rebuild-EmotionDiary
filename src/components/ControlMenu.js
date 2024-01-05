@@ -6,6 +6,7 @@ const ControlMenu = React.memo(({ value, onChange, optionList }) => {
       className="ControlMenu"
       value={value}
       name={value}
+      aria-label="필터 및 정렬"
       onChange={(e) => onChange(e.target.value)}
     >
       {optionList.map((it, idx) => (

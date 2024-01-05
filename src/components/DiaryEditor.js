@@ -131,6 +131,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
           <div className="input_box">
             <input
               className="input_date"
+              aria-label="일기 날짜"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               type="date"

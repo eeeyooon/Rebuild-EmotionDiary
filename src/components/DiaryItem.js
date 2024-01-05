@@ -32,7 +32,16 @@ const DiaryItem = ({ diaryId, emotion, content, date }) => {
           fetchpriority="high"
         />
       </div>
-      <div onClick={goDetail} className="info_wrapper">
+      <div
+        onClick={goDetail}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            goDetail();
+          }
+        }}
+        className="info_wrapper"
+        tabIndex={0}
+      >
         <div className="diary_date">{strDate}</div>
         <div className="diary_content_preview">{content.slice(0, 25)}</div>
       </div>

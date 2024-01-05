@@ -156,12 +156,12 @@ h4 {
 
 .MyButton_positive {
   background-color: #00b0f0;
-  color: white;
+  color: #1c1c1c;
 }
 
 .MyButton_negative {
   background-color: #fd565f;
-  color: white;
+  color: #1c1c1c;
 }
 
 /*  My Header  */
@@ -253,7 +253,7 @@ header button {
   border-radius: 8px;
   background: none;
   background-color: #1bbbff;
-  color: #ffffff;
+  color: #1c1c1c;
   border: none;
   display: flex;
   justify-content: center;
@@ -461,27 +461,27 @@ header button {
 
 .EmotionItem_on_1 {
   background-color: #64c964;
-  color: white;
+  color: #1c1c1c;
 }
 
 .EmotionItem_on_2 {
   background-color: #9dd772;
-  color: white;
+  color: #1c1c1c;
 }
 
 .EmotionItem_on_3 {
   background-color: #fdce17;
-  color: white;
+  color: #1c1c1c;
 }
 
 .EmotionItem_on_4 {
   background-color: #fd8446;
-  color: white;
+  color: #1c1c1c;
 }
 
 .EmotionItem_on_5 {
   background-color: #fd565f;
-  color: white;
+  color: #1c1c1c;
 }
 
 /* Diary */
@@ -520,7 +520,7 @@ header button {
 .DiaryPage .emotion_descript {
   font-size: 25px;
   font-family: "Dovemayo_gothic";
-  color: white;
+  color: #1c1c1c;
   user-select: none;
 }
 
@@ -586,10 +586,10 @@ header button {
 
 .myfooter button {
   background-color: #ffffff;
-  border: 1px solid #00b0f0;
+  border: 1px solid #4269f5;
   border-radius: 5px;
   padding: 4px 8px;
-  color: #00b0f0;
+  color: #4269f5;
   font-family: "Dovemayo_gothic";
   cursor: pointer;
 }
@@ -650,6 +650,10 @@ header button {
   cursor: pointer;
   width: 60px;
   font-size: 18px;
+}
+
+.Modal_Btn:hover {
+  color: #1bbbff;
 }
 
 /* Spinner */

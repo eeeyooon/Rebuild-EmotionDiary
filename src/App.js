@@ -1,11 +1,7 @@
-import React, { useReducer, useEffect, useRef } from "react";
+import React, { useReducer, useEffect, useRef, Suspense, lazy } from "react";
 import "./App.css";
+import Spinner from "./components/Spinner";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-import New from "./pages/New";
-import Diary from "./pages/Diary";
-import Edit from "./pages/Edit";
-import Login from "./pages/Login";
 import { useAuth } from "./hooks/useAuth";
 import {
   diaryReducer,
@@ -16,6 +12,11 @@ import {
   onInitialize,
 } from "./reducer/diaryReducer";
 import { getDiaries } from "./firebase/diaryManager";
+const Home = lazy(() => import("./pages/Home"));
+const New = lazy(() => import("./pages/New"));
+const Diary = lazy(() => import("./pages/Diary"));
+const Edit = lazy(() => import("./pages/Edit"));
+const Login = lazy(() => import("./pages/Login"));
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
@@ -62,29 +63,31 @@ function App() {
       >
         <BrowserRouter>
           <div className="App">
-            <Routes>
-              <Route
-                path="/"
-                element={<Navigate replace to={user ? "/home" : "/login"} />}
-              />
-              <Route
-                path="/home"
-                element={user ? <Home /> : <Navigate replace to="/login" />}
-              />
-              <Route path="/login" element={<Login setUser={updateUser} />} />
-              <Route
-                path="/new"
-                element={user ? <New /> : <Navigate replace to="/login" />}
-              />
-              <Route
-                path="/diary/:diaryId"
-                element={user ? <Diary /> : <Navigate replace to="/login" />}
-              />
-              <Route
-                path="/edit/:diaryId"
-                element={user ? <Edit /> : <Navigate replace to="/login" />}
-              />
-            </Routes>
+            <Suspense fallback={<Spinner />}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={<Navigate replace to={user ? "/home" : "/login"} />}
+                />
+                <Route
+                  path="/home"
+                  element={user ? <Home /> : <Navigate replace to="/login" />}
+                />
+                <Route path="/login" element={<Login setUser={updateUser} />} />
+                <Route
+                  path="/new"
+                  element={user ? <New /> : <Navigate replace to="/login" />}
+                />
+                <Route
+                  path="/diary/:diaryId"
+                  element={user ? <Diary /> : <Navigate replace to="/login" />}
+                />
+                <Route
+                  path="/edit/:diaryId"
+                  element={user ? <Edit /> : <Navigate replace to="/login" />}
+                />
+              </Routes>
+            </Suspense>
           </div>
         </BrowserRouter>
       </DiaryDispatchContext.Provider>

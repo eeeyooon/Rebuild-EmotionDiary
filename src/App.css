@@ -31,6 +31,10 @@ body {
     width: 640px;
   }
 
+  .Spinner {
+    width: 640px;
+  }
+
   .DiaryItem .emotion_img_wrapper {
     width: 120px;
   }
@@ -38,6 +42,10 @@ body {
 
 @media (max-width: 650px) {
   .App {
+    width: 90wh;
+  }
+
+  .Spinner {
     width: 90wh;
   }
   .DiaryItem {
@@ -640,4 +648,13 @@ header button {
   cursor: pointer;
   width: 60px;
   font-size: 18px;
+}
+
+/* Spinner */
+.Spinner {
+  width: 640px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

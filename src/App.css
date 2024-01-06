@@ -504,7 +504,6 @@ header button {
 .Modal_Background {
   background-color: #a8a8a8;
   position: fixed;
-  width: 660px;
   height: 900px;
   opacity: 0.65;
   z-index: 10;
@@ -552,9 +551,6 @@ header button {
 .ToastContainer {
   z-index: 20;
   position: absolute;
-  transform: translate(0, 0);
-  top: 50%;
-  left: 25%;
 }
 
 .ToastWrapper {
@@ -633,6 +629,16 @@ header button {
   .test_login {
     width: 250px;
     font-size: 16px;
+  }
+
+  .ToastContainer {
+    transform: translate(0, 0);
+    top: 50%;
+    left: 25%;
+  }
+
+  .Modal_Background {
+    width: 660px;
   }
 }
 
@@ -769,5 +775,15 @@ header button {
   .test_login {
     width: 220px;
     font-size: 14px;
+  }
+
+  .ToastContainer {
+    transform: translate(0, 0);
+    top: 50%;
+    left: 15%;
+  }
+
+  .Modal_Background {
+    width: 420px;
   }
 }

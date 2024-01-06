@@ -26,193 +26,6 @@ body {
   margin: 0;
 }
 
-@media (min-width: 650px) {
-  .App {
-    width: 640px;
-  }
-
-  .Spinner {
-    width: 640px;
-  }
-
-  .DiaryItem .emotion_img_wrapper {
-    width: 120px;
-  }
-
-  .diary_date {
-    font-size: 25px;
-  }
-
-  .MyButton {
-    font-size: 20px;
-  }
-
-  .DiaryItem .diary_content_preview {
-    font-size: 20px;
-  }
-
-  .head_text {
-    font-size: 25px;
-  }
-  .DiaryEditor h4 {
-    font-size: 22px;
-  }
-
-  .input_date {
-    font-size: 20px;
-  }
-
-  .DiaryEditor textarea {
-    font-size: 20px;
-  }
-
-  header {
-    padding: 20px 20px;
-  }
-
-  .DiaryPage .diary_content_wrapper p {
-    font-size: 20px;
-  }
-
-  .DiaryPage .emotion_descript {
-    font-size: 25px;
-  }
-}
-
-@media (max-width: 650px) {
-  .App {
-    width: 90wh;
-  }
-
-  .Spinner {
-    width: 90wh;
-  }
-  .DiaryItem {
-    width: 360px;
-  }
-
-  .DiaryItem .info_wrapper {
-    width: 135px;
-    margin-right: 5px;
-  }
-
-  .login_wrapper {
-    width: 90wh;
-  }
-
-  .menu_wrapper {
-    width: 350px;
-  }
-  .left-col {
-    display: flex;
-  }
-  .ControlMenu {
-    width: 105px;
-  }
-
-  .login_wrapper {
-    width: 400px;
-    display: flex;
-    align-items: center;
-  }
-
-  .login_wrapper > img {
-    width: 400px;
-  }
-
-  .thumbnail_text {
-    width: 285px;
-  }
-
-  .DiaryPage .head_btn_left .MyButton,
-  .DiaryPage .head_btn_right .MyButton,
-  .DiaryEditor .head_btn_left .MyButton,
-  .DiaryEditor .head_btn_right .MyButton {
-    font-size: 18px;
-    width: 90px;
-    padding: 10px 10px;
-  }
-
-  .head_text {
-    width: 150px;
-    font-size: 18px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
-  .Modal_Box {
-    transform: translate(50%, 0);
-    top: 45%;
-    left: -25%;
-    z-index: 20;
-  }
-
-  .diary_date {
-    font-size: 18px;
-  }
-
-  .MyButton {
-    font-size: 15px;
-  }
-
-  .DiaryItem .diary_content_preview {
-    font-size: 15px;
-  }
-
-  .DiaryEditor {
-    width: 380px;
-    margin: 0 auto;
-  }
-
-  .DiaryEditor h4 {
-    font-size: 18px;
-  }
-  .DiaryEditor header {
-    margin: 0 10px;
-  }
-
-  .DiaryEditor .emotion_list_wrapper {
-    width: 300px;
-  }
-
-  .DiaryEditor .EmotionItem {
-    width: 70px;
-
-    span {
-      font-size: 13px;
-    }
-  }
-
-  .DiaryEditor .EmotionItem img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .DiaryEditor section {
-    margin: 0 10px;
-  }
-
-  .input_date {
-    font-size: 16px;
-  }
-
-  .DiaryEditor textarea {
-    font-size: 18px;
-  }
-
-  header {
-    padding: 10px 10px;
-  }
-
-  .DiaryPage .diary_content_wrapper p {
-    font-size: 16px;
-  }
-
-  .DiaryPage .emotion_descript {
-    font-size: 20px;
-  }
-}
-
 #root {
   background-color: white;
   box-shadow: rbga(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -314,7 +127,6 @@ header button {
 
 .thumbnail_text {
   font-family: "Dovemayo_gothic";
-  font-size: 22px;
   margin-bottom: 100px;
   color: #1c1c1c;
 }
@@ -324,38 +136,27 @@ header button {
   margin-top: 8px;
 }
 
-.kakao_btn {
-  width: 250px;
+.kakao_btn,
+.test_login {
   height: 48px;
   border-radius: 8px;
   background: none;
-  background-color: #ffe400;
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
   margin: 0 auto;
   font-weight: bold;
   cursor: pointer;
+}
+
+.kakao_btn {
+  background-color: #ffe400;
   margin-bottom: 20px;
 }
 
 .test_login {
-  width: 250px;
-  height: 48px;
-  border-radius: 8px;
-  background: none;
   background-color: #1bbbff;
-  color: #1c1c1c;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  margin: 0 auto;
-  font-weight: bold;
-  cursor: pointer;
 }
 
 .kakao_logo {
@@ -768,4 +569,205 @@ header button {
   line-height: 50px;
   opacity: 95%;
   box-shadow: 1px 1px 1px 0px #e2e2e2;
+}
+
+/* Media Query */
+
+@media (min-width: 650px) {
+  .App {
+    width: 640px;
+  }
+
+  .Spinner {
+    width: 640px;
+  }
+
+  .DiaryItem .emotion_img_wrapper {
+    width: 120px;
+  }
+
+  .diary_date {
+    font-size: 25px;
+  }
+
+  .MyButton {
+    font-size: 20px;
+  }
+
+  .DiaryItem .diary_content_preview {
+    font-size: 20px;
+  }
+
+  .head_text {
+    font-size: 25px;
+  }
+  .DiaryEditor h4 {
+    font-size: 22px;
+  }
+
+  .input_date {
+    font-size: 20px;
+  }
+
+  .DiaryEditor textarea {
+    font-size: 20px;
+  }
+
+  header {
+    padding: 20px 20px;
+  }
+
+  .DiaryPage .diary_content_wrapper p {
+    font-size: 20px;
+  }
+
+  .DiaryPage .emotion_descript {
+    font-size: 25px;
+  }
+
+  .thumbnail_text {
+    font-size: 22px;
+  }
+
+  .kakao_btn,
+  .test_login {
+    width: 250px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 650px) {
+  .App,
+  .Spinner {
+    width: 90wh;
+  }
+
+  .DiaryItem {
+    width: 360px;
+  }
+
+  .DiaryItem .info_wrapper {
+    width: 135px;
+    margin-right: 5px;
+  }
+
+  .login_wrapper {
+    width: 90wh;
+  }
+
+  .menu_wrapper {
+    width: 350px;
+  }
+
+  .left-col {
+    display: flex;
+  }
+  .ControlMenu {
+    width: 105px;
+  }
+
+  .login_wrapper {
+    width: 400px;
+    display: flex;
+    align-items: center;
+  }
+
+  .login_wrapper > img {
+    width: 400px;
+  }
+
+  .thumbnail_text {
+    width: 285px;
+  }
+
+  .DiaryPage .head_btn_left .MyButton,
+  .DiaryPage .head_btn_right .MyButton,
+  .DiaryEditor .head_btn_left .MyButton,
+  .DiaryEditor .head_btn_right .MyButton {
+    font-size: 18px;
+    width: 90px;
+    padding: 10px 10px;
+  }
+
+  .head_text {
+    width: 150px;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .Modal_Box {
+    transform: translate(50%, 0);
+    top: 45%;
+    left: -25%;
+    z-index: 20;
+  }
+
+  .diary_date,
+  .DiaryEditor h4,
+  .DiaryEditor textarea {
+    font-size: 18px;
+  }
+
+  .MyButton,
+  .DiaryItem .diary_content_preview {
+    font-size: 15px;
+  }
+
+  .DiaryEditor {
+    width: 380px;
+    margin: 0 auto;
+  }
+
+  .DiaryEditor header {
+    margin: 0 10px;
+  }
+
+  .DiaryEditor .emotion_list_wrapper {
+    width: 300px;
+  }
+
+  .DiaryEditor .EmotionItem {
+    width: 70px;
+
+    span {
+      font-size: 13px;
+    }
+  }
+
+  .DiaryEditor .EmotionItem img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .DiaryEditor section {
+    margin: 0 10px;
+  }
+
+  .input_date {
+    font-size: 16px;
+  }
+
+  header {
+    padding: 10px 10px;
+  }
+
+  .DiaryPage .diary_content_wrapper p {
+    font-size: 16px;
+  }
+
+  .DiaryPage .emotion_descript {
+    font-size: 20px;
+  }
+
+  .thumbnail_text {
+    width: 238px;
+    font-size: 17px;
+  }
+
+  .kakao_btn,
+  .test_login {
+    width: 220px;
+    font-size: 14px;
+  }
 }

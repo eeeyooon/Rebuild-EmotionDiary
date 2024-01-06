@@ -16,6 +16,8 @@
 
 🚀 프로젝트 목표 : [기존 감정 일기장](https://github.com/eeeyooon/emotion-diary)에 로그인 기능 추가, 파이어베이스 Firestore 연결하여 일기 데이터 관리 등
 
+🛠 프로젝트 리팩토링 : 2024.01.01 ~ 2024.01.06 (6일간) | [리팩토링 요약본](https://eeeyooon.notion.site/b4286d82d0e74826a974d4873e7f72b3?pvs=4)
+
 <br/>
 
 💙 [새로운 감정 일기장 사용해보기](eeyooon-emotion-diary.web.app) (사용 전 [유의할 점](https://github.com/eeeyooon/Rebuild-EmotionDiary#%EC%9C%A0%EC%9D%98%ED%95%A0-%EC%A0%90) 참고)
